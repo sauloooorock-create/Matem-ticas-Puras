@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1e3a8a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mat. Puras">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>Matemáticas Puras</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#1f2937;--muted:#6b7280;--brand:#1e3a8a;--accent:#2563eb;--ok:#15803d;--line:#e5e7eb}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-text-size-adjust:100%}
+header{background:var(--brand);color:#fff;padding:14px 16px;position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding-top:calc(14px + env(safe-area-inset-top))}
+header h1{font-size:18px;margin:0;flex:1}
+header button{background:none;border:0;color:#fff;font-size:18px;padding:4px 8px;cursor:pointer}
+main{padding:16px;max-width:640px;margin:0 auto;padding-bottom:calc(40px + env(safe-area-inset-bottom))}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.card:disabled{opacity:.55;cursor:not-allowed}
+.card b{display:block;font-size:15px;margin-bottom:4px}
+.card small{color:var(--muted);font-size:12px;line-height:1.3}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:#dbeafe;color:var(--brand);margin-top:8px}
+.tag.soon{background:#f3f4f6;color:var(--muted)}
+input{width:100%;font:inherit;font-size:18px;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff}
+.row{display:flex;gap:8px;margin:10px 0}
+.row input{flex:1}
+.btn{font:inherit;font-size:16px;padding:12px 16px;border-radius:12px;border:0;background:var(--accent);color:#fff;cursor:pointer;width:100%}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:12px}
+.result{font-size:19px;font-weight:600;color:var(--ok);margin:4px 0 8px;line-height:1.5}
+ol.steps{padding-left:20px;margin:8px 0 0}
+ol.steps li{margin:8px 0;line-height:1.45;font-size:15px}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f1f5f9;padding:2px 6px;border-radius:6px;font-size:14px;word-break:break-word}
+.err{color:#b91c1c;font-size:15px}
+.hint{font-size:14px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{font:inherit;font-size:13px;padding:6px 10px;border-radius:99px;border:1px solid #cbd5e1;background:#fff;cursor:pointer}
+label.toggle{display:flex;align-items:center;gap:8px;font-size:15px;margin:10px 0}
+</style>
+</head>
+<body>
+<header>
+  <button id="backBtn" hidden aria-label="Volver">←</button>
+  <h1 id="hdrTitle">Matemáticas Puras</h1>
+</header>
+<main id="app"></main>
+
+<script>
+const TOPICS = [
+  {id:'arit', name:'Aritmética', desc:'Fracciones, decimales y operaciones', ready:true},
+  {id:'alg',  name:'Álgebra', desc:'Ecuaciones lineales y cuadráticas', ready:true},
+  {id:'geo',  name:'Geometría y trigonometría', desc:'Áreas, ángulos, funciones trigonométricas', stage:2},
+  {id:'cal',  name:'Cálculo', desc:'Límites, derivadas e integrales', stage:2},
+  {id:'prob', name:'Probabilidad y estadística', desc:'Conteo, distribuciones, pruebas', stage:3},
+  {id:'lin',  name:'Álgebra lineal', desc:'Matrices, vectores, valores propios', stage:4},
+  {id:'disc', name:'Discretas y numéricas', desc:'Lógica, grafos, métodos numéricos', stage:4},
+  {id:'adv',  name:'Avanzadas', desc:'Análisis, topología, categorías', stage:5}
+];
+
+const app = document.getElementById('app');
+const backBtn = document.getElementById('backBtn');
+const hdrTitle = document.getElementById('hdrTitle');
+let showSteps = (() => { try { return localStorage.getItem('mp-steps') !== '0'; } catch(e) { return true; } })();
+
+const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+
+/* ---------- Números racionales exactos ---------- */
+const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) { [a, b] = [b, a % b]; } return a || 1; };
+class R {
+  constructor(n, d = 1) {
+    if (d === 0) throw new Error('División entre cero');
+    if (d < 0) { n = -n; d = -d; }
+    const g = gcd(n, d);
+    this.n = n / g; this.d = d / g;
+  }
+  add(o) { return new R(this.n * o.d + o.n * this.d, this.d * o.d); }
+  sub(o) { return new R(this.n * o.d - o.n * this.d, this.d * o.d); }
+  mul(o) { return new R(this.n * o.n, this.d * o.d); }
+  div(o) { if (o.n === 0) throw new Error('División entre cero'); return new R(this.n * o.d, this.d * o.n); }
+  isZero() { return this.n === 0; }
+  val() { return this.n / this.d; }
+  toString() { return this.d === 1 ? String(this.n) : `${this.n}/${this.d}`; }
+}
+const c = (n, d = 1) => new R(n, d);
+const dec = v => { const [a, b = ''] = v.split('.'); return new R(Number(a + b), 10 ** b.length); };
+const round4 = v => parseFloat(v.toFixed(4)).toString();
+
+/* ---------- Polinomios (lista de coeficientes, índice = potencia) ---------- */
+function trim(r) { while (r.length > 1 && r[r.length - 1].isZero()) r.pop(); return r.length ? r : [c(0)]; }
+const deg = p => p.length - 1;
+function padd(p, q) {
+  const n = Math.max(p.length, q.length), r = [];
+  for (let i = 0; i < n; i++) r.push((p[i] || c(0)).add(q[i] || c(0)));
+  return trim(r);
+}
+function pmul(p, q) {
+  const r = Array.from({length: p.length + q.length - 1}, () => c(0));
+  p.forEach((a, i) => q.forEach((b, j) => { r[i + j] = r[i + j].add(a.mul(b)); }));
+  return trim(r);
+}
+const psub = (p, q) => padd(p, q.map(t => t.mul(c(-1))));
+
+function tokenize(s) {
+  const out = []; let i = 0;
+  while (i < s.length) {
+    const ch = s[i];
+    if (/\s/.test(ch)) { i++; continue; }
+    if (/[0-9.]/.test(ch)) {
+      const m = s.slice(i).match(/^(\d+\.\d+|\d+|\.\d+)/);
+      if (!m) throw new Error(`Número no válido cerca de "${s.slice(i, i + 5)}"`);
+      out.push({t: 'num', v: m[0]}); i += m[0].length; continue;
+    }
+    if (/[a-zA-Z]/.test(ch)) {
+      if (ch !== 'x') throw new Error('Por ahora la única variable es x');
+      out.push({t: 'x'}); i++; continue;
+    }
+    if ('+-*/^()='.includes(ch)) { out.push({t: ch}); i++; continue; }
+    throw new Error(`Carácter no válido: "${ch}"`);
+  }
+  return out;
+}
+
+function parsePoly(str) {
+  const toks = tokenize(str);
+  let pos = 0;
+  const peek = () => toks[pos];
+  const eat = t => { const k = toks[pos]; if (!k || k.t !== t) return false; pos++; return true; };
+  const startsAtom = () => { const k = peek(); return k && (k.t === 'num' || k.t === 'x' || k.t === '('); };
+  function expr() {
+    let v = term();
+    for (;;) {
+      if (eat('+')) v = padd(v, term());
+      else if (eat('-')) v = psub(v, term());
+      else break;
+    }
+    return v;
+  }
+  function term() {
+    let v = unary();
+    for (;;) {
+      if (eat('*')) v = pmul(v, unary());
+      else if (eat('/')) {
+        const d = unary();
+        if (deg(d) > 0) throw new Error('Sólo se puede dividir entre números, no entre expresiones con x');
+        v = v.map(t => t.div(d[0]));
+      }
+      else if (startsAtom()) v = pmul(v, unary());
+      else break;
+    }
+    return v;
+  }
+  function unary() {
+    if (eat('-')) return psub([c(0)], unary());
+    if (eat('+')) return unary();
+    return power();
+  }
+  function power() {
+    let v = atom();
+    if (eat('^')) {
+      const k = peek();
+      if (!k || k.t !== 'num' || !/^\d+$/.test(k.v)) throw new Error('El exponente debe ser un entero positivo');
+      pos++;
+      let r = [c(1)];
+      for (let i = 0; i < Number(k.v); i++) r = pmul(r, v);
+      v = r;
+    }
+    return v;
+  }
+  function atom() {
+    const k = peek();
+    if (!k) throw new Error('La expresión está incompleta');
+    if (k.t === 'num') { pos++; return [dec(k.v)]; }
+    if (k.t === 'x') { pos++; return [c(0), c(1)]; }
+    if (eat('(')) {
+      const v = expr();
+      if (!eat(')')) throw new Error('Falta cerrar un paréntesis');
+      return v;
+    }
+    throw new Error('Revisa la expresión: falta un número, una x o un paréntesis');
+  }
+  const v = expr();
+  if (pos < toks.length) throw new Error('Sobra texto en la expresión');
+  return v;
+}
+
+/* ---------- Formato ---------- */
+function showPoly(p) {
+  const parts = [];
+  for (let i = p.length - 1; i >= 0; i--) {
+    const t = p[i];
+    if (t.isZero()) continue;
+    const a = new R(Math.abs(t.n), t.d);
+    let coef = a.toString();
+    if (a.d !== 1) coef = `(${coef})`;
+    if (a.n === 1 && a.d === 1 && i > 0) coef = '';
+    const body = i === 0 ? coef : i === 1 ? coef + 'x' : coef + 'x²';
+    parts.push({neg: t.n < 0, body});
+  }
+  if (!parts.length) return '0';
+  return parts.map((p, k) => k === 0 ? (p.neg ? '−' : '') + p.body : (p.neg ? ' − ' : ' + ') + p.body).join('');
+}
+function fmtCoef(r) {
+  if (r.d === 1 && r.n === 1) return '';
+  if (r.d === 1 && r.n === -1) return '−';
+  return r.d === 1 ? String(r.n) : `(${r})`;
+}
+const fmtDec = r => parseFloat(r.val().toFixed(6)).toString();
+const isqrt = n => { let r = Math.floor(Math.sqrt(n)); while (r * r > n) r--; while ((r + 1) * (r + 1) <= n) r++; return r; };
+function exactSqrt(r) {
+  if (r.n < 0) return null;
+  const sn = isqrt(r.n), sd = isqrt(r.d);
+  return (sn * sn === r.n && sd * sd === r.d) ? new R(sn, sd) : null;
+}
+function evalPoly(p, x) {
+  let s = c(0), pw = c(1);
+  p.forEach(t => { s = s.add(t.mul(pw)); pw = pw.mul(x); });
+  return s;
+}
+
+/* ---------- Solucionador de ecuaciones ---------- */
+function solveEquation(raw) {
+  const txt = raw.replace(/×|·/g, '*').replace(/÷/g, '/').trim();
+  const sides = txt.split('=');
+  if (sides.length > 2) throw new Error('Sólo puede haber un signo =');
+  const steps = [];
+  const poly = sides.length === 2 ? psub(parsePoly(sides[0]), parsePoly(sides[1])) : parsePoly(txt);
+  steps.push(`Igualamos todo a cero: <span class="mono">${showPoly(poly)} = 0</span>`);
+  const d = deg(poly);
+  if (d > 2) throw new Error('Por ahora resuelvo ecuaciones de grado 1 y 2. Los grados superiores llegan en una etapa posterior.');
+  const k = poly[0], b = poly[1] || c(0), a = poly[2] || c(0);
+
+  if (d === 0) {
+    return k.isZero()
+      ? {lines: ['Cualquier número es solución'], steps}
+      : {lines: ['No tiene solución'], steps: [...steps, `<span class="mono">${k} = 0</span> es falso`]};
+  }
+
+  if (d === 1) {
+    const negK = k.mul(c(-1));
+    const x = negK.div(b);
+    steps.push(`Pasamos el término sin x al otro lado: <span class="mono">${fmtCoef(b)}x = ${negK}</span>`);
+    steps.push(`Dividimos entre ${b.d === 1 ? b.n : `(${b})`}: <span class="mono">x = ${x}</span>`);
+    steps.push(`Comprobación: <span class="mono">${b}·(${x}) + ${k} = ${b.mul(x).add(k)}</span> ✓`);
+    const lines = [`x = ${x}`];
+    if (x.d !== 1) lines.push(`Decimal: ${fmtDec(x)}`);
+    return {lines, steps};
+  }
+
+  // Grado 2: a x² + b x + k = 0
+  steps.push(`Identificamos: a = ${a}, b = ${b}, c = ${k}`);
+  const disc = b.mul(b).sub(c(4).mul(a).mul(k));
+  steps.push(`Discriminante: Δ = b² − 4ac = <span class="mono">(${b})² − 4·(${a})·(${k}) = ${disc}</span>`);
+
+  if (disc.n < 0) {
+    const re = -b.val() / (2 * a.val());
+    const im = Math.sqrt(-disc.val()) / Math.abs(2 * a.val());
+    steps.push('Como Δ es negativo, no hay raíces reales.');
+    return {lines: ['No tiene soluciones reales', `Complejas: x ≈ ${round4(re)} ± ${round4(im)}i`], steps};
+  }
+
+  const twoA = a.mul(c(2));
+  const nb = b.mul(c(-1));
+  const s = exactSqrt(disc);
+  steps.push(`Fórmula general: x = (−b ± √Δ) / 2a`);
+
+  if (s) {
+    steps.push(`√Δ = <span class="mono">${s}</span>`);
+    steps.push(`Sustituimos: <span class="mono">x = (${nb} ± ${s}) / ${twoA}</span>`);
+    const r1 = nb.add(s).div(twoA);
+    const r2 = nb.sub(s).div(twoA);
+    steps.push(`Comprobación con x = ${r1}: <span class="mono">${showPoly(poly)} → ${evalPoly(poly, r1)}</span> ✓`);
+    if (disc.isZero()) return {lines: [`Solución doble: x = ${r1}`], steps};
+    const lines = [`x₁ = ${r1}`, `x₂ = ${r2}`];
+    if (r1.d !== 1 || r2.d !== 1) lines.push(`Decimales: ${fmtDec(r1)} y ${fmtDec(r2)}`);
+    return {lines, steps};
+  }
+
+  const sq = Math.sqrt(disc.val());
+  const nbv = nb.val(), tv = twoA.val();
+  steps.push(`Δ no es cuadrado perfecto, así que usamos decimales: √Δ ≈ ${round4(sq)}`);
+  steps.push(`Sustituimos: <span class="mono">x = (${round4(nbv)} ± ${round4(sq)}) / ${round4(tv)}</span>`);
+  return {
+    lines: [`x₁ ≈ ${round4((nbv + sq) / tv)}`, `x₂ ≈ ${round4((nbv - sq) / tv)}`],
+    steps
+  };
+}
+
+/* ---------- Interfaz ---------- */
+function renderResult(r) {
+  return `<div class="panel"><div class="result">${r.lines.map(esc).join('<br>')}</div>
+    ${showSteps && r.steps.length ? `<ol class="steps">${r.steps.map(s => `<li>${s}</li>`).join('')}</ol>` : ''}</div>`;
+}
+const stepsToggle = () => `<label class="toggle"><input type="checkbox" id="st" ${showSteps ? 'checked' : ''} style="width:auto"> Mostrar pasos</label>`;
+function bindToggle() {
+  const el = document.getElementById('st');
+  if (el) el.onchange = () => { showSteps = el.checked; try { localStorage.setItem('mp-steps', showSteps ? '1' : '0'); } catch(e) {} };
+}
+
+function renderHome() {
+  app.innerHTML = `<p class="hint">Elige un tema. Las etapas se van liberando una por una.</p>
+    <div class="grid">${TOPICS.map(t => `
+      <button class="card" data-id="${t.id}" ${t.ready ? '' : 'disabled'}>
+        <b>${esc(t.name)}</b><small>${esc(t.desc)}</small><br>
+        <span class="tag ${t.ready ? '' : 'soon'}">${t.ready ? 'Disponible' : 'Etapa ' + t.stage}</span>
+      </button>`).join('')}</div>`;
+  app.querySelectorAll('.card:not([disabled])').forEach(b => b.onclick = () => location.hash = b.dataset.id);
+}
+
+function renderSoon(t) {
+  app.innerHTML = `<div class="panel"><p>${esc(t.name)} llega en la <b>etapa ${t.stage}</b>. Por ahora esta versión cubre aritmética y álgebra.</p></div>`;
+}
+
+function renderArit() {
+  app.innerHTML = `<div class="panel">
+    <label class="hint" for="ex">Escribe una operación con números y fracciones</label>
+    <div class="row"><input id="ex" placeholder="Ej. 3/4 + 5/6 × 2" autocomplete="off"></div>
+    <div class="chips">${['3/4 + 5/6', '(2/3)^2 − 1/9', '2.5 × 4/5', '7/8 ÷ 1/4'].map(e => `<button class="chip" data-ex="${esc(e)}">${esc(e)}</button>`).join('')}</div>
+    ${stepsToggle()}
+    <button class="btn" id="go">Calcular</button>
+    <div id="out"></div></div>`;
+  const run = () => {
+    const out = document.getElementById('out');
+    try {
+      const p = parsePoly(document.getElementById('ex').value.replace(/×|·/g, '*').replace(/÷/g, '/'));
+      if (deg(p) > 0) throw new Error('Aquí no se usa x. Para ecuaciones ve a Álgebra.');
+      const v = p[0];
+      const lines = [`= ${v}`];
+      if (v.d !== 1) lines.push(`Decimal: ${fmtDec(v)}`);
+      if (v.d !== 1 && Math.abs(v.n) > v.d) {
+        const w = Math.floor(Math.abs(v.n) / v.d), rem = Math.abs(v.n) % v.d;
+        if (rem) lines.push(`Número mixto: ${v.n < 0 ? '−' : ''}${w} ${rem}/${v.d}`);
+      }
+      const steps = [
+        'Primero se resuelven paréntesis y potencias, después multiplicaciones y divisiones, y al final sumas y restas.',
+        `Se simplifica el resultado dividiendo numerador y denominador entre su máximo común divisor: <span class="mono">${v}</span>`
+      ];
+      out.innerHTML = renderResult({lines, steps});
+    } catch (e) {
+      out.innerHTML = `<p class="err">${esc(e.message)}</p>`;
+    }
+  };
+  document.getElementById('go').onclick = run;
+  document.getElementById('ex').onkeydown = e => { if (e.key === 'Enter') run(); };
+  app.querySelectorAll('.chip').forEach(b => b.onclick = () => { document.getElementById('ex').value = b.dataset.ex; run(); });
+  bindToggle();
+}
+
+function renderAlg() {
+  app.innerHTML = `<div class="panel">
+    <label class="hint" for="eq">Escribe una ecuación con la variable x</label>
+    <div class="row"><input id="eq" placeholder="Ej. 2x + 3 = 7" autocomplete="off"></div>
+    <div class="chips">${['2x+3=7', 'x^2-5x+6=0', '3(x-2)=2x+1', 'x^2+4=0'].map(e => `<button class="chip" data-ex="${esc(e)}">${esc(e)}</button>`).join('')}</div>
+    ${stepsToggle()}
+    <button class="btn" id="go">Resolver</button>
+    <div id="out"></div></div>`;
+  const run = () => {
+    const out = document.getElementById('out');
+    try {
+      out.innerHTML = renderResult(solveEquation(document.getElementById('eq').value));
+    } catch (e) {
+      out.innerHTML = `<p class="err">${esc(e.message)}</p>`;
+    }
+  };
+  document.getElementById('go').onclick = run;
+  document.getElementById('eq').onkeydown = e => { if (e.key === 'Enter') run(); };
+  app.querySelectorAll('.chip').forEach(b => b.onclick = () => { document.getElementById('eq').value = b.dataset.ex; run(); });
+  bindToggle();
+}
+
+function route() {
+  const h = (location.hash || '#home').slice(1);
+  const t = TOPICS.find(x => x.id === h);
+  backBtn.hidden = h === 'home';
+  hdrTitle.textContent = t ? t.name : 'Matemáticas Puras';
+  if (h === 'arit') renderArit();
+  else if (h === 'alg') renderAlg();
+  else if (t) renderSoon(t);
+  else renderHome();
+  window.scrollTo(0, 0);
+}
+backBtn.onclick = () => { location.hash = 'home'; };
+window.addEventListener('hashchange', route);
+route();
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
