@@ -20,7 +20,7 @@ header button{background:none;border:0;color:#fff;font-size:18px;padding:4px 8px
 main{padding:16px;max-width:640px;margin:0 auto;padding-bottom:calc(40px + env(safe-area-inset-bottom))}
 h2,h3{margin:6px 0}
 .ltitle{font-size:20px;margin:8px 0 4px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid{display:grid;grid-template-columns:1fr;gap:10px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;text-align:left;font:inherit;color:inherit}
 .card:disabled{opacity:.55;cursor:not-allowed}
 .card b{display:block;font-size:15px;margin-bottom:4px}
@@ -69,6 +69,32 @@ sup.sl{font-size:.62em;vertical-align:super;line-height:1}
 .keys button{font:inherit;font-size:18px;height:48px;border-radius:10px;border:1px solid #cbd5e1;background:#f8fafc;color:var(--ink);cursor:pointer;padding:0}
 .keys button.fn{background:#e0e7ff;font-size:13px}
 .keys button.run{background:var(--accent);color:#fff;border-color:transparent;grid-column:span 2;font-size:16px}
+/* ---- Diseño ordenado de lecciones ---- */
+.seg{display:flex;background:#e9edf5;border-radius:12px;padding:4px;gap:4px;margin:6px 0 16px}
+.seg button{flex:1;border:0;background:transparent;font:inherit;font-size:14px;font-weight:600;padding:9px 4px;border-radius:9px;color:var(--muted);cursor:pointer}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.lessons{display:flex;flex-direction:column;gap:10px}
+.lesson{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;font:inherit;color:inherit;cursor:pointer}
+.lesson:active{background:#f8fafc}
+.lesson .num{flex:0 0 32px;height:32px;border-radius:50%;background:#eff6ff;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+.lesson .lt{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.lesson .lt b{font-size:15px;line-height:1.3}
+.lesson small{color:var(--muted);font-size:12px}
+.lesson .chev{color:var(--muted);font-size:24px;line-height:1}
+.bar{height:6px;background:#e5e7eb;border-radius:99px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--ok);border-radius:99px}
+.card-box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.card-box p{margin:6px 0}
+.ex-h{font-weight:700;font-size:13px;color:var(--brand);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.ex-t{font-size:17px;font-weight:600;margin:4px 0}
+.exo-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.badge{background:#eff6ff;color:var(--accent);border-radius:99px;padding:2px 11px;font-size:13px;font-weight:700}
+.check{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center;cursor:pointer}
+.exo-q{font-size:17px;margin:4px 0 10px}
+.card-box.ok{border-color:#86efac;background:#f0fdf4}
+.btn.sm{width:auto;padding:8px 14px;font-size:14px;margin:0}
+.tag{display:inline-block;font-size:12px;padding:3px 10px;border-radius:99px;font-weight:600}
+.ltitle{font-size:21px;margin:10px 0 2px;line-height:1.3}
 </style>
 </head>
 <body>
@@ -1044,58 +1070,92 @@ function renderSoon(t) {
   app.innerHTML = `<div class="panel"><p>${esc(t.name)} llega en la <b>etapa ${t.stage}</b>. Por ahora esta versión cubre aritmética y álgebra.</p></div>`;
 }
 
+/* Colores y progreso */
+const LEVEL_COLORS = {'Básico': '#15803d', 'Intermedio': '#b45309', 'Avanzado': '#b91c1c'};
+const LEVEL_BG = {'Básico': '#dcfce7', 'Intermedio': '#fef3c7', 'Avanzado': '#fee2e2'};
+const getDone = () => { try { return JSON.parse(localStorage.getItem('mp-done')) || {}; } catch(e) { return {}; } };
+const setDone = o => { try { localStorage.setItem('mp-done', JSON.stringify(o)); } catch(e) {} };
+const countDone = l => { const d = getDone(); return l.exercises.filter((_, i) => d[`${l.id}:${i}`]).length; };
+let levelTab = 'Básico';
+let lessonTab = 'teoria';
+
+/* Lista de lecciones de un tema, con pestañas de nivel arriba */
 function renderTopic(t) {
   const list = LESSONS[t.id] || [];
-  app.innerHTML = '' +
-    LEVELS.map(lv => {
-      const ls = list.filter(l => l.level === lv);
-      if (!ls.length) return '';
-      return `<h3 class="lvl">${lv}</h3>` + ls.map(l => `
-        <button class="lesson" data-l="${l.id}"><b>${l.title}</b><small>${l.exercises.length} ejercicios</small></button>`).join('');
-    }).join('');
-  app.querySelectorAll('.lesson').forEach(b => b.onclick = () => location.hash = `${t.id}/${b.dataset.l}`);
+  const ls = list.filter(l => l.level === levelTab);
+  app.innerHTML = `
+    <div class="seg">${LEVELS.map(lv => `<button class="${lv === levelTab ? 'on' : ''}" data-lv="${lv}">${lv}</button>`).join('')}</div>
+    <div class="lessons">${ls.map((l, i) => {
+      const done = countDone(l), total = l.exercises.length;
+      const pct = Math.round(done / total * 100);
+      return `<button class="lesson" data-l="${l.id}">
+        <span class="num">${i + 1}</span>
+        <span class="lt"><b>${l.title}</b>
+          <span class="bar"><span style="width:${pct}%"></span></span>
+          <small>${done} de ${total} ejercicios hechos</small></span>
+        <span class="chev">›</span></button>`;
+    }).join('')}</div>`;
+  app.querySelectorAll('[data-lv]').forEach(b => b.onclick = () => { levelTab = b.dataset.lv; renderTopic(t); });
+  app.querySelectorAll('.lesson').forEach(b => b.onclick = () => { lessonTab = 'teoria'; location.hash = `${t.id}/${b.dataset.l}`; });
 }
 
+/* Lección: pestañas Teoría / Ejemplos / Ejercicios, para no tener que bajar mucho */
 function renderLesson(t, id) {
   const list = LESSONS[t.id] || [];
   const idx = list.findIndex(l => l.id === id);
   const L = list[idx];
   if (!L) { app.innerHTML = '<p class="err">Esa lección no existe.</p>'; return; }
   const prev = list[idx - 1], next = list[idx + 1];
+  const done = getDone();
+  const bodies = {
+    teoria: `<div class="card-box">${L.theory.map(p => `<p>${p}</p>`).join('')}</div>`,
+    ejemplos: L.examples.map((ex, i) => `
+      <div class="card-box">
+        <div class="ex-h">Ejemplo ${i + 1}</div>
+        <p class="ex-t">${ex.t}</p>
+        <ol class="steps">${ex.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+      </div>`).join(''),
+    ejercicios: L.exercises.map((ex, i) => {
+      const ok = !!done[`${L.id}:${i}`];
+      return `<div class="card-box exo ${ok ? 'ok' : ''}">
+        <div class="exo-h">
+          <span class="badge">${i + 1}</span>
+          <label class="check"><input type="checkbox" data-done="${L.id}:${i}" ${ok ? 'checked' : ''}> Hecho</label>
+        </div>
+        <p class="exo-q">${ex.q}</p>
+        <button class="btn alt sm" data-ans="${i}">Ver respuesta</button>
+        <div class="ans" id="ans${i}" hidden>
+          <p class="result">Respuesta: ${ex.a}</p>
+          ${ex.s ? `<p class="hint">${ex.s}</p>` : ''}
+        </div>
+      </div>`;
+    }).join('') + `<button class="btn" id="calcBtn">Practicar en la calculadora</button>`
+  };
+  const tabs = [['teoria', 'Teoría'], ['ejemplos', 'Ejemplos'], ['ejercicios', 'Ejercicios']];
   app.innerHTML = `
-    <div class="panel">
-      <span class="tag">${L.level}</span>
-      <h2 class="ltitle">${L.title}</h2>
-      ${L.theory.map(p => `<p>${p}</p>`).join('')}
-    </div>
-    <div class="panel">
-      <h3>Ejemplos resueltos</h3>
-      ${L.examples.map((ex, i) => `
-        <div class="ex"><p><b>Ejemplo ${i + 1}:</b> ${ex.t}</p>
-        <ol class="steps">${ex.steps.map(s => `<li>${s}</li>`).join('')}</ol></div>`).join('')}
-    </div>
-    <div class="panel">
-      <h3>Ejercicios</h3>
-      ${L.exercises.map((ex, i) => `
-        <div class="exo"><p><b>${i + 1}.</b> ${ex.q}</p>
-          <button class="btn alt" data-ans="${i}">Ver respuesta</button>
-          <div class="ans" id="ans${i}" hidden>
-            <p class="result">Respuesta: ${ex.a}</p>
-            ${ex.s ? `<p class="hint">${ex.s}</p>` : ''}
-          </div></div>`).join('')}
-      <button class="btn" id="calcBtn">Practicar en la calculadora</button>
-    </div>
+    <span class="tag" style="background:${LEVEL_BG[L.level]};color:${LEVEL_COLORS[L.level]}">${L.level}</span>
+    <h2 class="ltitle">${L.title}</h2>
+    <div class="seg">${tabs.map(([k, n]) => `<button class="${k === lessonTab ? 'on' : ''}" data-tab="${k}">${n}</button>`).join('')}</div>
+    <div>${bodies[lessonTab]}</div>
     <div class="nav">
-      ${prev ? `<button class="btn alt" data-go="${t.id}/${prev.id}">← ${prev.title}</button>` : '<span></span>'}
-      ${next ? `<button class="btn" data-go="${t.id}/${next.id}">${next.title} →</button>` : ''}
+      ${prev ? `<button class="btn alt" data-go="${t.id}/${prev.id}">← Anterior</button>` : '<span></span>'}
+      ${next ? `<button class="btn" data-go="${t.id}/${next.id}">Siguiente →</button>` : ''}
     </div>`;
+  app.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { lessonTab = b.dataset.tab; renderLesson(t, id); });
   app.querySelectorAll('[data-ans]').forEach(b => b.onclick = () => {
     const el = document.getElementById('ans' + b.dataset.ans);
     el.hidden = !el.hidden;
     b.textContent = el.hidden ? 'Ver respuesta' : 'Ocultar respuesta';
   });
-  app.querySelectorAll('[data-go]').forEach(b => b.onclick = () => location.hash = b.dataset.go);
-  document.getElementById('calcBtn').onclick = () => location.hash = 'calc';
+  app.querySelectorAll('[data-done]').forEach(cb => cb.onchange = () => {
+    const d = getDone();
+    d[cb.dataset.done] = cb.checked;
+    setDone(d);
+    cb.closest('.exo').classList.toggle('ok', cb.checked);
+  });
+  app.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { lessonTab = 'teoria'; location.hash = b.dataset.go; });
+  const calc = document.getElementById('calcBtn');
+  if (calc) calc.onclick = () => location.hash = 'calc';
 }
 
 function renderCalc() {
