@@ -95,6 +95,9 @@ sup.sl{font-size:.62em;vertical-align:super;line-height:1}
 .btn.sm{width:auto;padding:8px 14px;font-size:14px;margin:0}
 .tag{display:inline-block;font-size:12px;padding:3px 10px;border-radius:99px;font-weight:600}
 .ltitle{font-size:21px;margin:10px 0 2px;line-height:1.3}
+.mat{display:inline-flex;flex-direction:column;justify-content:center;vertical-align:middle;margin:0 6px;padding:4px 10px;border-left:2px solid currentColor;border-right:2px solid currentColor;border-radius:6px}
+.mrow{display:flex;gap:14px;justify-content:center}
+.mrow>span{min-width:26px;text-align:center;padding:3px 0}
 </style>
 </head>
 <body>
@@ -1459,6 +1462,14 @@ function renderTopic(t) {
   app.querySelectorAll('.lesson').forEach(b => b.onclick = () => { lessonTab = 'teoria'; location.hash = `${t.id}/${b.dataset.l}`; });
 }
 
+/* Convierte [a b; c d] en una matriz con corchetes, como en un libro */
+function matHTML(s) {
+  return s.replace(/\[([^\[\];]+(?:;[^\[\];]+)+)\]/g, (m, inner) => {
+    const rows = inner.split(';').map(r => r.trim().split(/\s+/));
+    return `<span class="mat">${rows.map(r => `<span class="mrow">${r.map(v => `<span>${v}</span>`).join('')}</span>`).join('')}</span>`;
+  });
+}
+
 /* Lección: pestañas Teoría / Ejemplos / Ejercicios, para no tener que bajar mucho */
 function renderLesson(t, id) {
   const list = LESSONS[t.id] || [];
@@ -1496,7 +1507,7 @@ function renderLesson(t, id) {
     <span class="tag" style="background:${LEVEL_BG[L.level]};color:${LEVEL_COLORS[L.level]}">${L.level}</span>
     <h2 class="ltitle">${L.title}</h2>
     <div class="seg">${tabs.map(([k, n]) => `<button class="${k === lessonTab ? 'on' : ''}" data-tab="${k}">${n}</button>`).join('')}</div>
-    <div>${bodies[lessonTab]}</div>
+    <div>${matHTML(bodies[lessonTab])}</div>
     <div class="nav">
       ${prev ? `<button class="btn alt" data-go="${t.id}/${prev.id}">← Anterior</button>` : '<span></span>'}
       ${next ? `<button class="btn" data-go="${t.id}/${next.id}">Siguiente →</button>` : ''}
