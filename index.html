@@ -618,6 +618,123 @@ const LESSONS = {
        {q: `${F(1,2)} + ${F(1,3)} × (${F(3,4)} − ${F(1,2)})<sup>2</sup>`, a: F(25,48), s:`Paréntesis: ${F(1,4)}; al cuadrado: ${F(1,16)}; × ${F(1,3)} = ${F(1,48)}; + ${F(1,2)} = ${F(25,48)}.`},
        {q: `0.2 × ${F(5,6)} + ${F(3,10)} ÷ 3`, a: F(4,15), s:`${F(1,6)} + ${F(1,10)} = ${F(5,30)} + ${F(3,30)} = ${F(8,30)} = ${F(4,15)}.`},
        {q: `${F(7,12)} ÷ (${F(1,4)} + ${F(1,6)})`, a: F(7,5), s:`El paréntesis da ${F(5,12)}; ${F(7,12)} ÷ ${F(5,12)} = ${F(7,5)}.`}
+     ]},
+
+    {id:'mcd-mcm', level:'Básico', title:'MCD y mcm',
+     theory:[
+       `El <b>máximo común divisor (MCD)</b> es el número más grande que divide a dos o más números. El <b>mínimo común múltiplo (mcm)</b> es el más pequeño que es múltiplo de todos ellos.`,
+       `Método: descompón cada número en factores primos. El MCD toma los factores comunes con el menor exponente; el mcm toma todos los factores con el mayor exponente.`
+     ],
+     examples:[
+       {t: 'MCD y mcm de 12 y 18', steps:['12 = 2² × 3 y 18 = 2 × 3².', 'MCD: factores comunes con menor exponente: 2 × 3 = 6.', 'mcm: todos los factores con mayor exponente: 2² × 3² = 36.']}
+     ],
+     exercises:[
+       {q: 'MCD de 8 y 12', a: '4', s:'8 = 2³ y 12 = 2² × 3. Común: 2².'},
+       {q: 'mcm de 8 y 12', a: '24', s:'2³ × 3 = 24.'},
+       {q: 'MCD y mcm de 15 y 20', a: 'MCD = 5; mcm = 60', s:'15 = 3 × 5 y 20 = 2² × 5.'}
+     ]},
+
+    {id:'negativos', level:'Básico', title:'Números negativos: suma, resta y multiplicación',
+     theory:[
+       `Al <b>sumar</b> con el mismo signo, sumas los valores y conservas el signo. Con signos distintos, restas los valores y el resultado toma el signo del número de mayor valor.`,
+       `Al <b>multiplicar</b> o dividir: signos iguales dan positivo; signos distintos dan negativo.`
+     ],
+     examples:[
+       {t: '−5 + 8', steps:['Signos distintos: 8 − 5 = 3, y el signo es el del 8 (positivo).', 'Resultado: 3.']},
+       {t: '(−4) × (−3)', steps:['Signos iguales: el producto es positivo.', '4 × 3 = 12.']}
+     ],
+     exercises:[
+       {q: '−9 + 4', a: '−5'},
+       {q: '(−6) × 5', a: '−30'},
+       {q: '−3 − (−8)', a: '5', s:'Restar un negativo es sumar: −3 + 8 = 5.'}
+     ]},
+
+    {id:'tipos-numeros', level:'Básico', title:'Tipos de números',
+     theory:[
+       `<b>Naturales</b> (ℕ): 1, 2, 3… (algunos incluyen el 0). <b>Enteros</b> (ℤ): ..., −2, −1, 0, 1, 2… <b>Racionales</b> (ℚ): se escriben como fracción p/q con q ≠ 0; sus decimales son finitos o periódicos.`,
+       `<b>Reales</b> (ℝ): todos los racionales y los irracionales (como √2 o π). <b>Complejos</b> (ℂ): números de la forma a + bi, donde i² = −1.`
+     ],
+     examples:[
+       {t: 'Clasifica el 7', steps:['Es natural, entero, racional y real.', 'Por eso los conjuntos se contienen: ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ.']}
+     ],
+     exercises:[
+       {q: '−3/4', a: 'Racional, real y complejo', s:'Es fracción, pero no natural ni entero.'},
+       {q: '√2', a: 'Real e irracional', s:'No se puede escribir como fracción exacta.'},
+       {q: '√9', a: 'Natural, entero, racional y real', s:'√9 = 3.'},
+       {q: '3 + 2i', a: 'Complejo', s:'Tiene parte imaginaria 2i.'}
+     ]},
+
+    {id:'porcentajes', level:'Básico', title:'Porcentajes',
+     theory:[
+       `Un porcentaje es una fracción sobre 100. Para calcular p% de un número x, multiplicas x por ${F('p','100')}.`,
+       `Para un aumento o descuento, multiplicas por ${F('100 ± p','100')}: si aumenta 10%, multiplicas por 1.10; si baja 10%, por 0.90.`
+     ],
+     examples:[
+       {t: '20% de 150', steps:[`${F(20,100)} × 150 = 0.2 × 150 = 30.`]},
+       {t: 'Un artículo de 200 con 15% de descuento', steps:['Precio final = 200 × 0.85 = 170.']}
+     ],
+     exercises:[
+       {q: '35% de 80', a: '28'},
+       {q: 'Aumentar 250 en 10%', a: '275', s:'250 × 1.10.'},
+       {q: 'Descuento de 40% sobre 500', a: '300', s:'500 × 0.60.'},
+       {q: 'Qué porcentaje es 30 de 120', a: '25%', s:`${F(30,120)} = ${F(1,4)} = 25%.`}
+     ]},
+
+    {id:'proporciones', level:'Intermedio', title:'Proporciones y regla de tres',
+     theory:[
+       `Dos razones son proporcionales si ${F('a','b')} = ${F('c','d')}. Para encontrar el valor que falta, multiplicas en cruz: a × d = b × c.`
+     ],
+     examples:[
+       {t: 'Si 3 kg cuestan 90 pesos, ¿cuánto cuestan 5 kg?', steps:[`Planteas: ${F(3,90)} = ${F(5,'x')}.`, '3x = 5 × 90 = 450, entonces x = 150.']}
+     ],
+     exercises:[
+       {q: `${F(2,5)} = ${F('x',15)}`, a: 'x = 6', s:'2 × 15 = 5x, entonces x = 6.'},
+       {q: '4 lápices cuestan 20; ¿cuánto cuestan 7?', a: '35'},
+       {q: 'Un coche recorre 120 km en 2 horas. ¿Cuántos km en 5 horas, a la misma velocidad?', a: '300 km', s:'120 ÷ 2 = 60 km por hora; 60 × 5 = 300.'}
+     ]},
+
+    {id:'primos-divisibilidad', level:'Intermedio', title:'Números primos y divisibilidad',
+     theory:[
+       `Un número <b>primo</b> sólo es divisible entre 1 y entre sí mismo. El 1 no es primo.`,
+       `Criterios rápidos: es divisible entre 2 si termina en par; entre 3 si la suma de sus cifras es múltiplo de 3; entre 5 si termina en 0 o 5; entre 9 si la suma de sus cifras es múltiplo de 9; entre 10 si termina en 0.`
+     ],
+     examples:[
+       {t: '¿91 es primo?', steps:['91 no es par, la suma de cifras es 10, y no termina en 0 o 5.', 'Probando 7: 7 × 13 = 91. Entonces 91 no es primo.']}
+     ],
+     exercises:[
+       {q: '¿97 es primo?', a: 'Sí', s:'No es divisible entre 2, 3, 5 ni 7 (7 × 14 = 98).'},
+       {q: 'Descomposición de 84 en factores primos', a: '2² × 3 × 7', s:'84 = 4 × 21.'},
+       {q: 'Divisibilidad de 234 entre 2, 3, 5, 9 y 10', a: 'Sí entre 2, 3 y 9; no entre 5 ni 10', s:'Suma de cifras: 9.'}
+     ]},
+
+    {id:'notacion-cientifica', level:'Intermedio', title:'Notación científica',
+     theory:[
+       `La notación científica escribe un número como a × 10ⁿ, con 1 ≤ a < 10. El exponente n indica cuántos lugares se mueve el punto decimal: positivo si el número es grande, negativo si es pequeño.`
+     ],
+     examples:[
+       {t: '45 000', steps:['Mueves el punto 4 lugares a la izquierda: 4.5.', 'Resultado: 4.5 × 10⁴.']},
+       {t: '0.0032', steps:['Mueves el punto 3 lugares a la derecha: 3.2.', 'Resultado: 3.2 × 10⁻³.']}
+     ],
+     exercises:[
+       {q: '720 000', a: '7.2 × 10⁵'},
+       {q: '0.00085', a: '8.5 × 10⁻⁴'},
+       {q: '(2 × 10³) × (3 × 10⁴)', a: '6 × 10⁷', s:'Multiplicas los números (6) y sumas los exponentes (3 + 4 = 7).'}
+     ]},
+
+    {id:'raices', level:'Avanzado', title:'Raíces y radicales',
+     theory:[
+       `Propiedades: √(a × b) = √a × √b, y √(a/b) = √a / √b.`,
+       `Para simplificar, saca los factores cuadrados perfectos. Para <b>racionalizar</b> un denominador, multiplicas arriba y abajo por la raíz del denominador.`
+     ],
+     examples:[
+       {t: '√18', steps:['18 = 9 × 2, y √9 = 3.', 'Resultado: 3√2.']},
+       {t: `${F(2,'√5')}`, steps:[`Racionalizas: multiplicas arriba y abajo por √5: ${F('2√5','5')}.`]}
+     ],
+     exercises:[
+       {q: '√50', a: '5√2'},
+       {q: '√72', a: '6√2', s:'72 = 36 × 2.'},
+       {q: '√3 × √12', a: '6', s:'√36 = 6.'},
+       {q: `${F(1,'√2')}`, a: `${F('√2',2)}`, s:'Multiplica arriba y abajo por √2.'}
      ]}
   ],
 
