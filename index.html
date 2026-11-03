@@ -39,6 +39,10 @@ ol.steps li{margin:8px 0;line-height:1.45;font-size:15px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
 .chip{font:inherit;font-size:13px;padding:6px 10px;border-radius:99px;border:1px solid #cbd5e1;background:#fff;cursor:pointer}
 label.toggle{display:flex;align-items:center;gap:8px;font-size:15px;margin:10px 0}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.2;font-size:.92em}
+.frac>span{display:block;padding:0 4px}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;width:100%;text-align:center}
+.frac>span:last-child{text-align:center}
 </style>
 </head>
 <body>
@@ -69,6 +73,8 @@ const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>'
 
 /* ---------- Números racionales exactos ---------- */
 const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) { [a, b] = [b, a % b]; } return a || 1; };
+/* Fracción apilada, como en un libro de texto */
+const stack = (n, d) => `<span class="frac"><span>${n}</span><span>${d}</span></span>`;
 class R {
   constructor(n, d = 1) {
     if (d === 0) throw new Error('División entre cero');
@@ -82,7 +88,10 @@ class R {
   div(o) { if (o.n === 0) throw new Error('División entre cero'); return new R(this.n * o.d, this.d * o.n); }
   isZero() { return this.n === 0; }
   val() { return this.n / this.d; }
-  toString() { return this.d === 1 ? String(this.n) : `${this.n}/${this.d}`; }
+  toString() {
+    if (this.d === 1) return String(this.n);
+    return `${this.n < 0 ? '−' : ''}${stack(Math.abs(this.n), this.d)}`;
+  }
 }
 const c = (n, d = 1) => new R(n, d);
 const dec = v => { const [a, b = ''] = v.split('.'); return new R(Number(a + b), 10 ** b.length); };
@@ -264,11 +273,11 @@ function solveEquation(raw) {
   const twoA = a.mul(c(2));
   const nb = b.mul(c(-1));
   const s = exactSqrt(disc);
-  steps.push(`Fórmula general: x = (−b ± √Δ) / 2a`);
+  steps.push(`Fórmula general: <span class="mono">x = ${stack('−b ± √Δ', '2a')}</span>`);
 
   if (s) {
     steps.push(`√Δ = <span class="mono">${s}</span>`);
-    steps.push(`Sustituimos: <span class="mono">x = (${nb} ± ${s}) / ${twoA}</span>`);
+    steps.push(`Sustituimos: <span class="mono">x = ${stack(`${nb} ± ${s}`, `${twoA}`)}</span>`);
     const r1 = nb.add(s).div(twoA);
     const r2 = nb.sub(s).div(twoA);
     steps.push(`Comprobación con x = ${r1}: <span class="mono">${showPoly(poly)} → ${evalPoly(poly, r1)}</span> ✓`);
@@ -281,7 +290,7 @@ function solveEquation(raw) {
   const sq = Math.sqrt(disc.val());
   const nbv = nb.val(), tv = twoA.val();
   steps.push(`Δ no es cuadrado perfecto, así que usamos decimales: √Δ ≈ ${round4(sq)}`);
-  steps.push(`Sustituimos: <span class="mono">x = (${round4(nbv)} ± ${round4(sq)}) / ${round4(tv)}</span>`);
+  steps.push(`Sustituimos: <span class="mono">x = ${stack(`${round4(nbv)} ± ${round4(sq)}`, round4(tv))}</span>`);
   return {
     lines: [`x₁ ≈ ${round4((nbv + sq) / tv)}`, `x₂ ≈ ${round4((nbv - sq) / tv)}`],
     steps
@@ -290,7 +299,7 @@ function solveEquation(raw) {
 
 /* ---------- Interfaz ---------- */
 function renderResult(r) {
-  return `<div class="panel"><div class="result">${r.lines.map(esc).join('<br>')}</div>
+  return `<div class="panel"><div class="result">${r.lines.join('<br>')}</div>
     ${showSteps && r.steps.length ? `<ol class="steps">${r.steps.map(s => `<li>${s}</li>`).join('')}</ol>` : ''}</div>`;
 }
 const stepsToggle = () => `<label class="toggle"><input type="checkbox" id="st" ${showSteps ? 'checked' : ''} style="width:auto"> Mostrar pasos</label>`;
@@ -331,7 +340,7 @@ function renderArit() {
       if (v.d !== 1) lines.push(`Decimal: ${fmtDec(v)}`);
       if (v.d !== 1 && Math.abs(v.n) > v.d) {
         const w = Math.floor(Math.abs(v.n) / v.d), rem = Math.abs(v.n) % v.d;
-        if (rem) lines.push(`Número mixto: ${v.n < 0 ? '−' : ''}${w} ${rem}/${v.d}`);
+        if (rem) lines.push(`Número mixto: ${v.n < 0 ? '−' : ''}${w} ${stack(rem, v.d)}`);
       }
       const steps = [
         'Primero se resuelven paréntesis y potencias, después multiplicaciones y divisiones, y al final sumas y restas.',
