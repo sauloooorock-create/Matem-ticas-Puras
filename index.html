@@ -1605,6 +1605,202 @@ const EXTRA = {
       {t: '2x + 3y = 12, x − y = 1', steps:['Despejas x = y + 1 y sustituyes: 2(y + 1) + 3y = 12.', '5y = 10, y = 2 y x = 3.', 'Comprobación: 6 + 6 = 12 ✓.']}
     ]
   },
+  'desigualdades': {
+    theory: [`<b>Método paso a paso:</b> resuelves como una ecuación, pero <b>si multiplicas o divides por un número negativo, el signo de la desigualdad se invierte</b>. Luego escribe la solución como intervalo o en la recta numérica.`],
+    examples: [
+      {t: '2x − 5 &lt; 3', steps:['2x &lt; 8.', 'x &lt; 4. Intervalo: (−∞, 4).']},
+      {t: '−3x ≥ 6', steps:['Divides entre −3 e inviertes el signo: x ≤ −2.', 'Intervalo: (−∞, −2].']}
+    ]
+  },
+  'polinomios': {
+    theory: [`<b>Operaciones:</b> sumas y restas agrupando términos semejantes; multiplicas cada término con cada otro. <b>División sintética:</b> sirve para dividir entre (x − a). <b>Teorema del residuo:</b> el residuo de dividir P(x) entre (x − a) es P(a).`],
+    examples: [
+      {t: '(x² + 2x − 1) + (3x² − x + 4)', steps:['x²: 1 + 3 = 4x².', 'x: 2 − 1 = x.', 'Constante: −1 + 4 = 3.', 'Resultado: 4x² + x + 3.']},
+      {t: '(x³ − 2x² + 4) ÷ (x − 1)', steps:['Coeficientes: 1, −2, 0, 4. Usamos a = 1.', 'Bajas 1. Luego 1·1 + (−2) = −1; −1·1 + 0 = −1; −1·1 + 4 = 3.', 'Cociente: x² − x − 1. Residuo: 3.', 'Comprobación: P(1) = 1 − 2 + 4 = 3 ✓.']}
+    ]
+  },
+  'fracciones-racionales': {
+    theory: [`<b>Método paso a paso:</b> 1) factoriza numerador y denominador; 2) cancela factores comunes (indicando los valores que no puede tomar la variable); 3) para sumar, usa el mínimo común denominador.`],
+    examples: [
+      {t: '(x² − 4) / (x² + x − 2)', steps:['Numerador: (x − 2)(x + 2). Denominador: (x + 2)(x − 1).', 'Cancelas (x + 2): (x − 2)/(x − 1), con x ≠ −2 y x ≠ 1.']},
+      {t: 'x/(x + 1) + 2/(x − 1)', steps:['Denominador común: (x + 1)(x − 1).', 'Numerador: x(x − 1) + 2(x + 1) = x² + x + 2.', 'Resultado: (x² + x + 2)/(x² − 1).']}
+    ]
+  },
+  'exponentes-logaritmos': {
+    theory: [`<b>Definición:</b> log_b(a) = c significa que b^c = a. <b>Propiedades:</b> log(xy) = log x + log y; log(x/y) = log x − log y; log(xⁿ) = n·log x; log_b(b) = 1 y log_b(1) = 0.`],
+    examples: [
+      {t: 'log₃(81)', steps:['Preguntas: ¿a qué potencia de 3 da 81?', '3⁴ = 81, así que log₃(81) = 4.']},
+      {t: 'log 2 + log 5', steps:['Propiedad del producto: log(2 · 5) = log 10.', 'log 10 = 1.']},
+      {t: '2ˣ = 32', steps:['32 = 2⁵, entonces x = 5.']}
+    ]
+  },
+  'complejos': {
+    theory: [`<b>Número complejo:</b> z = a + bi, con i² = −1. <b>Suma:</b> sumas partes reales e imaginarias por separado. <b>Producto:</b> aplicas distributiva y usas i² = −1. <b>Conjugado:</b> a − bi; para dividir, multiplicas arriba y abajo por el conjugado del denominador.`],
+    examples: [
+      {t: '(3 + 2i) + (1 − 5i)', steps:['Reales: 3 + 1 = 4. Imaginarios: 2 − 5 = −3.', 'Resultado: 4 − 3i.']},
+      {t: '(2 + i)(2 − i)', steps:['Distributiva: 4 − 2i + 2i − i² = 4 − i².', 'Como i² = −1: 4 + 1 = 5.']},
+      {t: '(1 + i) ÷ (1 − i)', steps:['Multiplicas por el conjugado (1 + i): (1 + i)² / ((1 − i)(1 + i)).', 'Numerador: 1 + 2i + i² = 2i. Denominador: 1 − i² = 2.', 'Resultado: i.']}
+    ]
+  },
+  'sucesiones-series': {
+    theory: [`<b>Aritmética:</b> aₙ = a₁ + (n − 1)d; suma de n términos: Sₙ = n(a₁ + aₙ)/2. <b>Geométrica:</b> aₙ = a₁·rⁿ⁻¹; suma: Sₙ = a₁(rⁿ − 1)/(r − 1).`],
+    examples: [
+      {t: 'Sucesión 3, 7, 11, 15, …: término 10 y suma de los 10 primeros', steps:['d = 4. a₁₀ = 3 + 9·4 = 39.', 'S₁₀ = 10(3 + 39)/2 = 210.']},
+      {t: 'Sucesión 2, 6, 18, …: término 6', steps:['r = 3. a₆ = 2 · 3⁵ = 2 · 243 = 486.']}
+    ]
+  },
+  'valor-absoluto-ecuaciones': {
+    theory: [`<b>Idea clave:</b> |A| = B equivale a dos ecuaciones: A = B o A = −B (con B ≥ 0). Siempre comprueba ambas soluciones.`],
+    examples: [
+      {t: '|2x − 1| = 5', steps:['Caso 1: 2x − 1 = 5, x = 3.', 'Caso 2: 2x − 1 = −5, x = −2.', 'Comprobación: |2·3 − 1| = 5 ✓ y |2·(−2) − 1| = 5 ✓.']}
+    ]
+  },
+  'valor-absoluto-desigualdades': {
+    theory: [`<b>Regla:</b> |A| &lt; B equivale a −B &lt; A &lt; B. |A| &gt; B equivale a A &gt; B o A &lt; −B.`],
+    examples: [
+      {t: '|x − 2| &lt; 3', steps:['−3 &lt; x − 2 &lt; 3.', 'Sumas 2: −1 &lt; x &lt; 5.']},
+      {t: '|x + 1| ≥ 4', steps:['x + 1 ≥ 4 o x + 1 ≤ −4.', 'x ≥ 3 o x ≤ −5.']}
+    ]
+  },
+  'desigualdades-cuadraticas': {
+    theory: [`<b>Método paso a paso:</b> 1) iguala a cero y resuelve la ecuación; 2) ubica las raíces en la recta numérica; 3) prueba un valor en cada intervalo para saber el signo.`],
+    examples: [
+      {t: 'x² − x − 6 &lt; 0', steps:['Factorizas: (x − 3)(x + 2) &lt; 0. Raíces: −2 y 3.', 'Pruebas x = 0: (−3)(2) = −6 &lt; 0, cumple.', 'Solución: −2 &lt; x &lt; 3.']},
+      {t: 'x² − 4 ≥ 0', steps:['(x − 2)(x + 2) ≥ 0. Raíces: −2 y 2.', 'Pruebas x = 0: −4, no cumple. Pruebas x = 3: 5, sí cumple.', 'Solución: x ≤ −2 o x ≥ 2.']}
+    ]
+  },
+  'ecuaciones-exp-log': {
+    theory: [`<b>Estrategia:</b> para ecuaciones exponenciales, iguala bases o aplica logaritmos. Para logarítmicas, usa las propiedades y verifica el dominio (el argumento del logaritmo debe ser positivo).`],
+    examples: [
+      {t: '3ˣ⁺¹ = 27', steps:['27 = 3³, así que x + 1 = 3 y x = 2.']},
+      {t: 'log x + log(x − 3) = 1', steps:['Dominio: x &gt; 3.', 'log[x(x − 3)] = 1, entonces x(x − 3) = 10.', 'x² − 3x − 10 = 0 → (x − 5)(x + 2) = 0.', 'x = 5 (x = −2 no está en el dominio).']}
+    ]
+  },
+  'complejos-polar': {
+    theory: [`<b>Forma polar:</b> z = r(cos θ + i sen θ), donde r = √(a² + b²) y θ es el ángulo. <b>Producto:</b> multiplicas módulos y sumas ángulos. <b>Cociente:</b> divides módulos y restas ángulos.`],
+    examples: [
+      {t: 'Pasa 1 + i√3 a forma polar', steps:['r = √(1 + 3) = 2.', 'θ = 60° (porque cos θ = 1/2 y sen θ = √3/2).', 'Resultado: 2(cos 60° + i sen 60°).']},
+      {t: '[2(cos 30° + i sen 30°)] · [3(cos 60° + i sen 60°)]', steps:['Módulos: 2 · 3 = 6.', 'Ángulos: 30° + 60° = 90°.', 'Resultado: 6(cos 90° + i sen 90°) = 6i.']}
+    ]
+  },
+  'notacion-sigma': {
+    theory: [`<b>Sumatoria:</b> Σ de k = a hasta b significa sumar la expresión para cada k entre a y b. Fórmulas útiles: Σ k = n(n + 1)/2 y Σ k² = n(n + 1)(2n + 1)/6.`],
+    examples: [
+      {t: 'Σ (2k + 1) desde k = 1 hasta 4', steps:['k = 1: 3. k = 2: 5. k = 3: 7. k = 4: 9.', 'Suma: 24.']},
+      {t: 'Σ k desde k = 1 hasta 10', steps:['Fórmula: 10 · 11 / 2 = 55.']}
+    ]
+  },
+  'series-geometricas-infinitas': {
+    theory: [`<b>Serie geométrica infinita:</b> si |r| &lt; 1, la suma es S = a₁ / (1 − r). Si |r| ≥ 1, la serie no converge.`],
+    examples: [
+      {t: '1 + 1/2 + 1/4 + …', steps:['a₁ = 1, r = 1/2.', 'S = 1 / (1 − 1/2) = 2.']},
+      {t: 'Expresa 0.333… como fracción', steps:['0.333… = 3/10 + 3/100 + …, con a₁ = 3/10 y r = 1/10.', 'S = (3/10) / (9/10) = 1/3.']}
+    ]
+  },
+  'ecuaciones-racionales': {
+    theory: [`<b>Método paso a paso:</b> 1) identifica los valores que anulan algún denominador (no válidos); 2) multiplica toda la ecuación por el mínimo común denominador; 3) resuelve; 4) descarta soluciones no válidas.`],
+    examples: [
+      {t: '3/x + 1 = 4/x', steps:['Multiplicas por x (x ≠ 0): 3 + x = 4.', 'x = 1. Válida.']},
+      {t: 'x/(x − 2) = 2 + 2/(x − 2)', steps:['Multiplicas por (x − 2), con x ≠ 2: x = 2(x − 2) + 2.', 'x = 2x − 2, entonces x = 2.', 'Pero x = 2 no es válida. La ecuación no tiene solución.']}
+    ]
+  },
+  'vectores': {
+    theory: [`<b>Vectores en el plano:</b> u = (a, b). <b>Suma:</b> se suman componente a componente. <b>Escalar:</b> k·u = (ka, kb). <b>Norma:</b> |u| = √(a² + b²).`],
+    examples: [
+      {t: 'u = (1, 2), v = (3, −1). Calcula u + v, 2u − v y |u|', steps:['u + v = (4, 1).', '2u − v = (2 − 3, 4 + 1) = (−1, 5).', '|u| = √(1 + 4) = √5.']}
+    ]
+  },
+  'producto-punto': {
+    theory: [`<b>Producto punto:</b> u · v = a·c + b·d. Si u · v = 0, los vectores son perpendiculares. Además, u · v = |u||v| cos θ.`],
+    examples: [
+      {t: '(1, 2) · (3, −1)', steps:['1·3 + 2·(−1) = 3 − 2 = 1.']},
+      {t: '¿(2, 3) y (−3, 2) son perpendiculares?', steps:['(2)(−3) + (3)(2) = −6 + 6 = 0.', 'Sí, son perpendiculares.']}
+    ]
+  },
+  'matrices': {
+    theory: [`<b>Matriz:</b> arreglo de números en filas y columnas. <b>Suma:</b> sumas elemento a elemento (las matrices deben tener el mismo tamaño). <b>Transpuesta:</b> cambias filas por columnas.`],
+    examples: [
+      {t: 'A = [1 2; 3 4], B = [0 1; 1 0]. Calcula A + B', steps:['Sumas elemento a elemento: [1 3; 4 4].']},
+      {t: 'Transpuesta de [1 2 3]', steps:['Cambias filas por columnas: la columna [1; 2; 3].']}
+    ]
+  },
+  'multiplicacion-matrices': {
+    theory: [`<b>Regla:</b> el elemento (i, j) del producto es la fila i de la primera matriz multiplicada por la columna j de la segunda, sumando los productos. El número de columnas de la primera debe coincidir con el número de filas de la segunda. En general AB ≠ BA.`],
+    examples: [
+      {t: '[1 2; 3 4] · [2; 1]', steps:['Primera fila: 1·2 + 2·1 = 4.', 'Segunda fila: 3·2 + 4·1 = 10.', 'Resultado: [4; 10].']},
+      {t: '[1 0; 2 1] · [1 2; 3 4]', steps:['Fila 1 por columnas: [1·1 + 0·3, 1·2 + 0·4] = [1, 2].', 'Fila 2: [2·1 + 1·3, 2·2 + 1·4] = [5, 8].', 'Resultado: [1 2; 5 8].']}
+    ]
+  },
+  'determinantes': {
+    theory: [`<b>2×2:</b> det [a b; c d] = ad − bc. <b>3×3:</b> desarrollas por una fila o columna, multiplicando cada elemento por el determinante de su menor y con signo alternado (+, −, +).`],
+    examples: [
+      {t: 'det [3 1; 2 4]', steps:['3·4 − 1·2 = 12 − 2 = 10.']},
+      {t: 'det [1 2 0; 0 1 3; 1 0 1]', steps:['Desarrollo por la primera fila: 1·(1·1 − 3·0) − 2·(0·1 − 3·1) + 0.', '= 1·1 − 2·(−3) = 1 + 6 = 7.']}
+    ]
+  },
+  'inversa-sistemas': {
+    theory: [`<b>Método matricial:</b> si A·x = b, entonces x = A⁻¹·b. Para una matriz 2×2, A⁻¹ = (1/det A) · [d −b; −c a]. Solo existe si det A ≠ 0.`],
+    examples: [
+      {t: 'Resuelve 2x + y = 5, x + y = 3', steps:['A = [2 1; 1 1], det A = 2 − 1 = 1.', 'A⁻¹ = [1 −1; −1 2].', 'x = A⁻¹·b = [1·5 − 1·3; −1·5 + 2·3] = [2; 1].', 'Comprobación: 2·2 + 1 = 5 ✓ y 2 + 1 = 3 ✓.']}
+    ]
+  },
+  'valores-propios': {
+    theory: [`<b>Método paso a paso:</b> 1) resuelve det(A − λI) = 0 para obtener los valores propios λ; 2) para cada λ, resuelve (A − λI)v = 0 para obtener el vector propio v.`],
+    examples: [
+      {t: 'A = [2 1; 1 2]', steps:['det(A − λI) = (2 − λ)² − 1 = 0, entonces λ = 1 o λ = 3.', 'Para λ = 3: A − 3I = [−1 1; 1 −1]. Solución: v = (1, 1).']}
+    ]
+  },
+  'espacios-vectoriales': {
+    theory: [`<b>Subespacio:</b> debe contener al vector cero y ser cerrado bajo suma y multiplicación por escalar. <b>Independencia lineal:</b> si a·v₁ + b·v₂ = 0 solo tiene la solución a = b = 0, son independientes.`],
+    examples: [
+      {t: '¿W = {(x, y) : y = 2x} es subespacio de ℝ²?', steps:['El cero (0, 0) cumple 0 = 2·0 ✓.', 'Si (x, 2x) + (z, 2z) = (x + z, 2(x + z)), sigue en W ✓.', 'Sí es subespacio.']},
+      {t: '¿(1, 1, 0) y (0, 1, 1) son independientes?', steps:['a(1, 1, 0) + b(0, 1, 1) = 0 da a = 0, a + b = 0, b = 0.', 'Solo hay solución trivial: son independientes.']}
+    ]
+  },
+  'transformaciones-lineales': {
+    theory: [`<b>Transformación lineal:</b> T(x, y) se puede escribir como una matriz. <b>Núcleo:</b> vectores que T manda al cero. <b>Dimensión:</b> dim(núcleo) + dim(imagen) = dim del dominio.`],
+    examples: [
+      {t: 'T(x, y) = (x + y, x − y). Calcula T(2, 3)', steps:['T(2, 3) = (2 + 3, 2 − 3) = (5, −1).', 'Matriz asociada: [1 1; 1 −1].']},
+      {t: 'Núcleo de T(x, y) = (x − y, 2x − 2y)', steps:['x − y = 0, entonces x = y.', 'El núcleo es la recta {(t, t)}, de dimensión 1.']}
+    ]
+  },
+  'operaciones-binarias': {
+    theory: [`<b>Operación binaria:</b> regla que combina dos elementos de un conjunto. Propiedades a revisar: conmutativa (a∗b = b∗a), asociativa ((a∗b)∗c = a∗(b∗c)) y elemento neutro (e tal que a∗e = a).`],
+    examples: [
+      {t: 'a∗b = a + b − 1 en los enteros', steps:['Conmutativa: a + b − 1 = b + a − 1 ✓.', 'Asociativa: ambos lados dan a + b + c − 2 ✓.', 'Neutro: a + e − 1 = a, entonces e = 1.']}
+    ]
+  },
+  'grupos': {
+    theory: [`<b>Grupo (G, ∗):</b> cumple cerradura, asociatividad, elemento neutro e inverso para cada elemento. Si además es conmutativo, es un grupo abeliano.`],
+    examples: [
+      {t: 'Z₄ = {0, 1, 2, 3} con suma módulo 4', steps:['Cerradura: por ejemplo 2 + 3 = 5 ≡ 1 (mod 4) ✓.', 'Neutro: 0. Inverso de 1: 3, porque 1 + 3 = 4 ≡ 0.', 'Es un grupo abeliano.']}
+    ]
+  },
+  'subgrupos-lagrange': {
+    theory: [`<b>Subgrupo:</b> subconjunto que también es grupo con la misma operación. <b>Teorema de Lagrange:</b> el orden de un subgrupo divide al orden del grupo.`],
+    examples: [
+      {t: '{0, 2} dentro de Z₄', steps:['{0, 2} es cerrado bajo suma módulo 4 y tiene inverso: es subgrupo.', 'Orden 2 divide a 4 ✓.']},
+      {t: '{0, 2, 4} dentro de Z₆', steps:['Es subgrupo de orden 3.', '3 divide a 6 ✓.']}
+    ]
+  },
+  'anillos': {
+    theory: [`<b>Anillo (R, +, ·):</b> R es grupo abeliano con la suma, y la multiplicación es asociativa y distributiva respecto a la suma. Puede tener divisores de cero.`],
+    examples: [
+      {t: 'Z₆ con suma y multiplicación módulo 6', steps:['Es anillo: cumple todas las propiedades.', 'Tiene divisores de cero: 2 · 3 = 6 ≡ 0 (mod 6), con 2 ≠ 0 y 3 ≠ 0.']}
+    ]
+  },
+  'cuerpos': {
+    theory: [`<b>Cuerpo:</b> anillo conmutativo en el que todo elemento distinto de cero tiene inverso multiplicativo. Ejemplos: ℚ, ℝ, ℂ. Z_p es cuerpo si p es primo.`],
+    examples: [
+      {t: 'Z₅ es cuerpo: inverso de 2', steps:['Buscamos x con 2x ≡ 1 (mod 5).', 'x = 3, porque 2 · 3 = 6 ≡ 1 (mod 5).']}
+    ]
+  },
+  'homomorfismos': {
+    theory: [`<b>Homomorfismo:</b> función φ entre grupos que respeta la operación: φ(a ∗ b) = φ(a) ∗ φ(b). Si además es biyectivo, es un isomorfismo.`],
+    examples: [
+      {t: 'φ: Z → Z₂, φ(n) = n mod 2', steps:['Comprobación con a = 3, b = 5: φ(3 + 5) = φ(8) = 0.', 'φ(3) + φ(5) = 1 + 1 = 0 (mod 2) ✓.', 'Es homomorfismo.']}
+    ]
+  },
   'ec-dos-pasos': {
     theory: [`<b>Método paso a paso:</b> 1) quita primero la suma o resta; 2) después quita la multiplicación o división; 3) comprueba sustituyendo.`],
     examples: [
