@@ -1480,6 +1480,131 @@ const EXTRA = {
       {t: '−6 + x = 2', steps:['Sumas 6 a ambos lados: x = 8.', 'Comprobación: −6 + 8 = 2 ✓.']}
     ]
   },
+  'decimales': {
+    theory: [`<b>Fracción a decimal:</b> divide el numerador entre el denominador. <b>Decimal a fracción:</b> escribe los dígitos sobre la potencia de 10 correspondiente (un decimal → entre 10, dos decimales → entre 100…) y simplifica.`],
+    examples: [
+      {t: '3/4 como decimal', steps:['3 ÷ 4 = 0.75.']},
+      {t: '1.2 como fracción', steps:['1.2 = 12/10 (un decimal, entre 10).', 'Simplificando entre 2: 6/5.']}
+    ]
+  },
+  'jerarquia': {
+    theory: [`<b>Orden de operaciones (PEMDAS):</b> 1) paréntesis; 2) potencias y raíces; 3) multiplicaciones y divisiones, de izquierda a derecha; 4) sumas y restas, de izquierda a derecha.`],
+    examples: [
+      {t: '3 + 4 × 2² − (10 ÷ 5)', steps:['Paréntesis: 10 ÷ 5 = 2.', 'Potencia: 2² = 4.', '4 × 4 = 16.', '3 + 16 − 2 = 17.']},
+      {t: '20 ÷ 4 × (2 + 3)', steps:['Paréntesis: 2 + 3 = 5.', 'Izquierda a derecha: 20 ÷ 4 = 5, luego 5 × 5 = 25.']}
+    ]
+  },
+  'potencias-fr': {
+    theory: [`<b>Potencia de una fracción:</b> (a/b)ⁿ = aⁿ/bⁿ. <b>Exponente negativo:</b> a⁻ⁿ = 1/aⁿ, es decir, se invierte la base y el exponente se vuelve positivo.`],
+    examples: [
+      {t: '(2/3)³', steps:['Elevas numerador y denominador: 2³/3³ = 8/27.']},
+      {t: '(3/4)⁻²', steps:['El exponente negativo invierte la fracción: (4/3)².', 'Elevas: 16/9.']}
+    ]
+  },
+  'tipos-numeros': {
+    theory: [`<b>Clasificación:</b> naturales (1, 2, 3…), enteros (incluyen negativos y cero), racionales (se escriben como a/b con b ≠ 0; sus decimales terminan o se repiten), irracionales (decimales infinitos no periódicos, como √2 o π) y reales (racionales e irracionales juntos).`],
+    examples: [
+      {t: 'Clasifica 7, −3/4, √2 y 0.333…', steps:['7: natural, entero, racional y real.', '−3/4: racional y real (no es entero).', '√2: irracional y real.', '0.333… = 1/3: racional y real.']}
+    ]
+  },
+  'proporciones': {
+    theory: [`<b>Proporción:</b> a/b = c/d se cumple si a·d = b·c (producto de extremos igual al producto de medios). <b>Regla de tres:</b> planteas dos razones y despejas la incógnita.`],
+    examples: [
+      {t: 'x/6 = 10/15', steps:['Productos cruzados: 15x = 60.', 'x = 4.']},
+      {t: 'Si 3 kg cuestan 90 pesos, ¿cuánto cuestan 5 kg?', steps:['3 kg → 90 pesos; 5 kg → x.', '3/90 = 5/x → 3x = 450 → x = 150 pesos.']}
+    ]
+  },
+  'primos-divisibilidad': {
+    theory: [`<b>Criterios rápidos:</b> divisible entre 2 si es par; entre 3 si la suma de sus dígitos es múltiplo de 3; entre 5 si termina en 0 o 5. <b>Factorización prima:</b> divide entre primos (2, 3, 5, 7…) hasta llegar a 1.`],
+    examples: [
+      {t: 'Factoriza 360', steps:['360 ÷ 2 = 180 ÷ 2 = 90 ÷ 2 = 45.', '45 ÷ 3 = 15 ÷ 3 = 5.', 'Resultado: 360 = 2³ × 3² × 5.']},
+      {t: '¿221 es primo?', steps:['Probamos primos: no es par, la suma de dígitos (5) no es múltiplo de 3, no termina en 0 ni 5.', '221 ÷ 13 = 17, así que 221 = 13 × 17. No es primo.']}
+    ]
+  },
+  'notacion-cientifica': {
+    theory: [`<b>Forma científica:</b> a × 10ⁿ con 1 ≤ a < 10. Se mueve el punto decimal: hacia la izquierda el exponente sube; hacia la derecha baja.`],
+    examples: [
+      {t: 'Escribe 4 500 000 y 0.00037 en notación científica', steps:['4 500 000 = 4.5 × 10⁶ (punto corrido 6 lugares a la izquierda).', '0.00037 = 3.7 × 10⁻⁴ (punto corrido 4 lugares a la derecha).']},
+      {t: '(3 × 10⁴) × (2 × 10³)', steps:['Multiplicas coeficientes: 3 × 2 = 6.', 'Sumas exponentes: 4 + 3 = 7.', 'Resultado: 6 × 10⁷.']}
+    ]
+  },
+  'raices': {
+    theory: [`<b>Simplificar raíces:</b> busca un factor cuadrado perfecto dentro de la raíz y sácalo. <b>Racionalizar:</b> si el denominador tiene raíz, multiplica arriba y abajo por esa raíz.`],
+    examples: [
+      {t: '√50', steps:['50 = 25 × 2.', '√25 = 5, entonces √50 = 5√2.']},
+      {t: '1/√3', steps:['Multiplicas arriba y abajo por √3: √3/3.']}
+    ]
+  },
+  'decimales-operaciones': {
+    theory: [`<b>Con decimales:</b> en suma y resta alinea el punto decimal. En multiplicación, multiplica como enteros y cuenta los decimales totales en el resultado. En división, mueve el punto del divisor a la derecha (y lo mismo al dividendo) hasta que el divisor sea entero.`],
+    examples: [
+      {t: '2.5 × 0.4', steps:['25 × 4 = 100. Decimales: 1 + 1 = 2.', 'Resultado: 1.00 = 1.']},
+      {t: '3.6 ÷ 0.6', steps:['Mueves un lugar: 36 ÷ 6 = 6.']}
+    ]
+  },
+  'congruencias': {
+    theory: [`<b>Congruencia:</b> a ≡ b (mod n) significa que a − b es múltiplo de n (a y b dejan el mismo residuo al dividir entre n).`],
+    examples: [
+      {t: '¿17 ≡ 5 (mod 6)?', steps:['17 − 5 = 12, y 12 es múltiplo de 6. Sí es congruente.']},
+      {t: 'Calcula 2⁵ mod 7', steps:['2⁵ = 32.', '32 = 4·7 + 4, así que el residuo es 4.']}
+    ]
+  },
+  'criptografia-basica': {
+    theory: [`<b>Cifrado César:</b> cada letra se desplaza un número fijo en el alfabeto. Para descifrar, se desplaza en sentido contrario. Con módulo 26 el alfabeto da la vuelta.`],
+    examples: [
+      {t: 'Descifra DOOR con desplazamiento 3', steps:['D → A, O → L, O → L, R → O.', 'Mensaje: ALLO.']}
+    ]
+  },
+  'ec-parentesis': {
+    theory: [`<b>Método paso a paso:</b> 1) aplica la propiedad distributiva; 2) agrupa términos con x de un lado y números del otro; 3) despeja x; 4) comprueba.`],
+    examples: [
+      {t: '3(x − 2) = 2x + 5', steps:['3x − 6 = 2x + 5.', 'Pasas 2x y 6: x = 11.', 'Comprobación: 3(9) = 27 y 2(11) + 5 = 27 ✓.']},
+      {t: '2(x + 3) − (x − 1) = 10', steps:['2x + 6 − x + 1 = 10.', 'x + 7 = 10, entonces x = 3.']}
+    ]
+  },
+  'ec-fracciones': {
+    theory: [`<b>Método paso a paso:</b> multiplica toda la ecuación por el mínimo común múltiplo de los denominadores para quitar las fracciones; luego resuelve como una ecuación normal.`],
+    examples: [
+      {t: 'x/2 + x/3 = 5', steps:['mcm(2, 3) = 6. Multiplicas todo por 6: 3x + 2x = 30.', '5x = 30, entonces x = 6.']},
+      {t: '(x + 1)/4 = (x − 1)/2', steps:['Multiplicas por 4: x + 1 = 2(x − 1).', 'x + 1 = 2x − 2, entonces x = 3.']}
+    ]
+  },
+  'cuadr-factor': {
+    theory: [`<b>Método paso a paso:</b> busca dos números que multipliquen a c y sumen b, en x² + bx + c = 0. Luego factoriza como (x + p)(x + q) = 0 e iguala cada factor a cero.`],
+    examples: [
+      {t: 'x² − 5x + 6 = 0', steps:['Dos números que multiplican 6 y suman −5: −2 y −3.', '(x − 2)(x − 3) = 0, así que x = 2 o x = 3.']},
+      {t: 'x² − 9 = 0', steps:['Diferencia de cuadrados: (x − 3)(x + 3) = 0.', 'x = 3 o x = −3.']}
+    ]
+  },
+  'formula-general': {
+    theory: [`<b>Fórmula general:</b> para ax² + bx + c = 0, calcula el discriminante Δ = b² − 4ac y luego x = (−b ± √Δ) / (2a). Si Δ &lt; 0 las raíces son complejas.`],
+    examples: [
+      {t: '2x² + 3x − 2 = 0', steps:['a = 2, b = 3, c = −2. Δ = 9 + 16 = 25.', 'x = (−3 ± 5) / 4, así que x = 1/2 o x = −2.']},
+      {t: 'x² − 4x + 5 = 0', steps:['Δ = 16 − 20 = −4 &lt; 0, raíces complejas.', 'x = (4 ± 2i) / 2 = 2 ± i.']}
+    ]
+  },
+  'productos-notables': {
+    theory: [`<b>Productos notables:</b> (a + b)² = a² + 2ab + b²; (a − b)² = a² − 2ab + b²; (a + b)(a − b) = a² − b²; (a ± b)³ = a³ ± 3a²b + 3ab² ± b³.`],
+    examples: [
+      {t: '(x + 4)²', steps:['x² + 2·x·4 + 4² = x² + 8x + 16.']},
+      {t: '(2x − 3)(2x + 3)', steps:['Diferencia de cuadrados: (2x)² − 3² = 4x² − 9.']}
+    ]
+  },
+  'factorizacion': {
+    theory: [`<b>Métodos:</b> 1) factor común; 2) agrupación (pares de términos con factor común); 3) diferencia de cuadrados; 4) trinomio; 5) suma o diferencia de cubos.`],
+    examples: [
+      {t: '6x²y − 9xy²', steps:['Factor común 3xy: 3xy(2x − 3y).']},
+      {t: 'x³ + 2x² + 3x + 6', steps:['Agrupas: x²(x + 2) + 3(x + 2).', 'Factor común (x + 2): (x + 2)(x² + 3).']},
+      {t: 'x³ − 8', steps:['Diferencia de cubos: (x − 2)(x² + 2x + 4).']}
+    ]
+  },
+  'sistemas-lineales': {
+    theory: [`<b>Métodos:</b> sustitución (despejas una variable y la metes en la otra ecuación), igualación o eliminación (sumas las ecuaciones para cancelar una variable). Siempre comprueba en ambas ecuaciones.`],
+    examples: [
+      {t: 'x + y = 10, x − y = 4', steps:['Sumas ambas: 2x = 14, x = 7.', 'Sustituyes: 7 + y = 10, y = 3.']},
+      {t: '2x + 3y = 12, x − y = 1', steps:['Despejas x = y + 1 y sustituyes: 2(y + 1) + 3y = 12.', '5y = 10, y = 2 y x = 3.', 'Comprobación: 6 + 6 = 12 ✓.']}
+    ]
+  },
   'ec-dos-pasos': {
     theory: [`<b>Método paso a paso:</b> 1) quita primero la suma o resta; 2) después quita la multiplicación o división; 3) comprueba sustituyendo.`],
     examples: [
