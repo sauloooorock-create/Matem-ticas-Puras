@@ -325,8 +325,13 @@ function renderSoon(t) {
 function renderArit() {
   app.innerHTML = `<div class="panel">
     <label class="hint" for="ex">Escribe una operación con números y fracciones</label>
-    <div class="row"><input id="ex" placeholder="Ej. 3/4 + 5/6 × 2" autocomplete="off"></div>
-    <div class="chips">${['3/4 + 5/6', '(2/3)^2 − 1/9', '2.5 × 4/5', '7/8 ÷ 1/4'].map(e => `<button class="chip" data-ex="${esc(e)}">${esc(e)}</button>`).join('')}</div>
+    <div class="row"><input id="ex" placeholder="Escribe tu operación" autocomplete="off"></div>
+    <div class="chips">${[
+      ['3/4 + 5/6', `${stack(3, 4)} + ${stack(5, 6)}`],
+      ['(2/3)^2 − 1/9', `(${stack(2, 3)})² − ${stack(1, 9)}`],
+      ['2.5 × 4/5', `2.5 × ${stack(4, 5)}`],
+      ['7/8 ÷ 1/4', `${stack(7, 8)} ÷ ${stack(1, 4)}`]
+    ].map(([e, label]) => `<button class="chip" data-ex="${esc(e)}">${label}</button>`).join('')}</div>
     ${stepsToggle()}
     <button class="btn" id="go">Calcular</button>
     <div id="out"></div></div>`;
