@@ -888,6 +888,133 @@ const LESSONS = {
        {q: '2x² − x − 1 = 0', a: `x = 1 o x = ${F('−1','2')}`, s:'(2x + 1)(x − 1) = 0.'},
        {q: 'x² + 2x + 5 = 0', a: 'No tiene soluciones reales', s:'Δ = 4 − 20 = −16 < 0.'},
        {q: 'x(x + 3) = 4', a: 'x = 1 o x = −4', s:'Pasa todo a un lado: x² + 3x − 4 = 0.'}
+     ]},
+
+    {id:'productos-notables', level:'Intermedio', title:'Productos notables',
+     theory:[
+       `Son productos que se repiten mucho, así que conviene memorizarlos:`,
+       `(a + b)² = a² + 2ab + b² &nbsp;·&nbsp; (a − b)² = a² − 2ab + b² &nbsp;·&nbsp; (a + b)(a − b) = a² − b²`
+     ],
+     examples:[
+       {t: '(x + 3)²', steps:['a = x, b = 3.', 'a² = x², 2ab = 6x, b² = 9.', 'Resultado: x² + 6x + 9.']},
+       {t: '(2x − 5)(2x + 5)', steps:['Es la suma por diferencia: a² − b² con a = 2x, b = 5.', 'Resultado: 4x² − 25.']}
+     ],
+     exercises:[
+       {q: '(x + 4)²', a: 'x² + 8x + 16'},
+       {q: '(3x − 1)²', a: '9x² − 6x + 1', s:'El término del medio es 2 · 3x · (−1) = −6x.'},
+       {q: '(x − 7)(x + 7)', a: 'x² − 49'}
+     ]},
+
+    {id:'factorizacion', level:'Intermedio', title:'Factorización',
+     theory:[
+       `Factorizar es escribir una expresión como producto. Primero busca un <b>factor común</b>; después revisa si es <b>diferencia de cuadrados</b> (a² − b² = (a − b)(a + b)) o un <b>trinomio</b> x² + bx + c que se pueda separar en dos binomios.`
+     ],
+     examples:[
+       {t: '6x² + 9x', steps:['Factor común: 3x.', 'Queda 3x(2x + 3).']},
+       {t: 'x² − 16', steps:['Diferencia de cuadrados: x² − 4².', 'Queda (x − 4)(x + 4).']}
+     ],
+     exercises:[
+       {q: '4x² − 8x', a: '4x(x − 2)'},
+       {q: '9x² − 25', a: '(3x − 5)(3x + 5)'},
+       {q: 'x² + 5x + 6', a: '(x + 2)(x + 3)', s:'Busca dos números que sumen 5 y multipliquen 6: 2 y 3.'}
+     ]},
+
+    {id:'sistemas-lineales', level:'Intermedio', title:'Sistemas de ecuaciones lineales',
+     theory:[
+       `Un sistema son dos ecuaciones con dos incógnitas que se cumplen a la vez. Se resuelve por <b>sustitución</b> (despejas una variable y la metes en la otra) o por <b>eliminación</b> (sumas las ecuaciones para quitar una variable).`
+     ],
+     examples:[
+       {t: 'x + y = 10 y x − y = 2', steps:['Sumas las ecuaciones: 2x = 12, entonces x = 6.', 'Sustituyes en la primera: 6 + y = 10, entonces y = 4.', 'Comprobación: 6 − 4 = 2 ✓.']}
+     ],
+     exercises:[
+       {q: 'x + y = 7 y x − y = 1', a: 'x = 4, y = 3'},
+       {q: '2x + y = 8 y x + y = 5', a: 'x = 3, y = 2', s:'Restas las ecuaciones: x = 3, luego y = 2.'},
+       {q: '2x + 3y = 12 y x − y = 1', a: 'x = 3, y = 2', s:'Despejas x = y + 1 y sustituyes: 5y = 10.'}
+     ]},
+
+    {id:'desigualdades', level:'Intermedio', title:'Desigualdades',
+     theory:[
+       `Se resuelven igual que una ecuación, con un cuidado: <b>si multiplicas o divides por un número negativo, el signo de la desigualdad se invierte</b>.`
+     ],
+     examples:[
+       {t: '2x + 3 < 11', steps:['Restas 3: 2x < 8.', 'Divides entre 2: x < 4.']},
+       {t: '−3x > 6', steps:['Divides entre −3, y el signo se invierte: x < −2.']}
+     ],
+     exercises:[
+       {q: '5x − 2 ≥ 8', a: 'x ≥ 2'},
+       {q: '−2x ≤ 10', a: 'x ≥ −5', s:'Al dividir entre −2 el signo cambia.'},
+       {q: '3(x − 1) < x + 5', a: 'x < 4', s:'3x − 3 < x + 5, entonces 2x < 8.'}
+     ]},
+
+    {id:'polinomios', level:'Avanzado', title:'Polinomios',
+     theory:[
+       `Un polinomio es una suma de términos con potencias enteras no negativas de x. Su <b>grado</b> es el mayor exponente. Para evaluarlo, sustituyes x por el valor dado.`
+     ],
+     examples:[
+       {t: 'P(x) = x² − 3x + 2, evalúa P(2)', steps:['Sustituyes: 2² − 3 · 2 + 2.', '4 − 6 + 2 = 0.', 'Como P(2) = 0, x = 2 es raíz del polinomio.']}
+     ],
+     exercises:[
+       {q: 'Grado de 3x⁴ − x + 2', a: '4'},
+       {q: 'P(x) = x² + 1, calcula P(3)', a: '10'},
+       {q: '(x + 1)(x − 2)', a: 'x² − x − 2', s:'x² − 2x + x − 2.'}
+     ]},
+
+    {id:'fracciones-racionales', level:'Avanzado', title:'Fracciones racionales',
+     theory:[
+       `Una fracción racional tiene polinomios arriba y abajo. Para simplificarla, <b>factoriza</b> ambos lados y cancela los factores comunes. Recuerda que el denominador nunca puede valer 0.`
+     ],
+     examples:[
+       {t: `${F('x²−4','x−2')}`, steps:['Factorizas: x² − 4 = (x − 2)(x + 2).', `Cancelas (x − 2): queda x + 2, con la condición x ≠ 2.`]}
+     ],
+     exercises:[
+       {q: `${F('x²−9','x+3')}`, a: 'x − 3 (con x ≠ −3)'},
+       {q: `${F('2x','x+1')} + ${F(1,'x+1')}`, a: `${F('2x+1','x+1')}`, s:'Mismo denominador: sumas numeradores.'},
+       {q: `${F('x+1','x²−1')}`, a: `${F(1,'x−1')} (con x ≠ −1)`, s:'x² − 1 = (x − 1)(x + 1).'}
+     ]},
+
+    {id:'exponentes-logaritmos', level:'Avanzado', title:'Exponentes, radicales y logaritmos',
+     theory:[
+       `Leyes de exponentes: aᵐ · aⁿ = aᵐ⁺ⁿ y (aᵐ)ⁿ = aᵐⁿ.`,
+       `Logaritmo: log_b(a) = c significa que bᶜ = a. Propiedades: log(xy) = log x + log y; log(xⁿ) = n · log x.`
+     ],
+     examples:[
+       {t: 'x³ · x⁴', steps:['Se suman los exponentes: x³⁺⁴ = x⁷.']},
+       {t: 'log₂ 8', steps:['Preguntas: ¿a qué potencia de 2 da 8?', '2³ = 8, entonces log₂ 8 = 3.']}
+     ],
+     exercises:[
+       {q: 'log₃ 81', a: '4', s:'3⁴ = 81.'},
+       {q: 'log 100 (base 10)', a: '2', s:'10² = 100.'},
+       {q: 'Resuelve 2ˣ = 32', a: 'x = 5', s:'32 = 2⁵.'}
+     ]},
+
+    {id:'complejos', level:'Avanzado', title:'Números complejos',
+     theory:[
+       `Un número complejo es a + bi, con i² = −1. Se suman sumando partes reales e imaginarias por separado. Para multiplicar, usa i² = −1.`,
+       `El <b>conjugado</b> de a + bi es a − bi, y el módulo es |a + bi| = √(a² + b²).`
+     ],
+     examples:[
+       {t: '(2 + 3i) + (1 − i)', steps:['Reales: 2 + 1 = 3. Imaginarias: 3i − i = 2i.', 'Resultado: 3 + 2i.']},
+       {t: 'i³', steps:['i³ = i² · i = −1 · i = −i.']}
+     ],
+     exercises:[
+       {q: '(3 + 2i)(1 − i)', a: '5 − i', s:'3 − 3i + 2i − 2i² = 3 − i + 2.'},
+       {q: 'i⁴', a: '1'},
+       {q: '|3 + 4i|', a: '5', s:'√(9 + 16) = √25.'}
+     ]},
+
+    {id:'sucesiones-series', level:'Avanzado', title:'Sucesiones y series',
+     theory:[
+       `<b>Aritmética</b>: cada término suma una constante d. Término n: aₙ = a₁ + (n − 1)d. Suma de n términos: Sₙ = n(a₁ + aₙ) / 2.`,
+       `<b>Geométrica</b>: cada término se multiplica por una constante r. Término n: aₙ = a₁ · rⁿ⁻¹. Suma de n términos: Sₙ = a₁(rⁿ − 1) / (r − 1), con r ≠ 1.`
+     ],
+     examples:[
+       {t: '2, 5, 8, … ¿cuál es el décimo término?', steps:['a₁ = 2, d = 3.', 'a₁₀ = 2 + 9 · 3 = 29.']},
+       {t: 'Suma de 1 a 100', steps:['Es aritmética con a₁ = 1, a₁₀₀ = 100, n = 100.', 'S = 100(1 + 100) / 2 = 5050.']}
+     ],
+     exercises:[
+       {q: '3, 7, 11, … ¿término 20?', a: '79', s:'3 + 19 · 4.'},
+       {q: 'Suma de 1 a 20', a: '210'},
+       {q: '2, 6, 18, … ¿término 5?', a: '162', s:'2 · 3⁴.'}
      ]}
   ]
 };
