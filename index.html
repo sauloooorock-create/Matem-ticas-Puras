@@ -112,7 +112,8 @@ const TOPICS = [
   {id:'geo',  name:'Geometría y trigonometría', desc:'Áreas, ángulos, funciones trigonométricas', stage:2},
   {id:'cal',  name:'Cálculo', desc:'Límites, derivadas e integrales', stage:2},
   {id:'prob', name:'Probabilidad y estadística', desc:'Conteo, distribuciones, pruebas', stage:3},
-  {id:'lin',  name:'Álgebra lineal', desc:'Matrices, vectores, valores propios', stage:4},
+  {id:'lin',  name:'Álgebra lineal', desc:'Vectores, matrices, determinantes, valores propios', ready:true},
+  {id:'abs',  name:'Álgebra abstracta', desc:'Grupos, anillos, cuerpos y homomorfismos', ready:true},
   {id:'disc', name:'Discretas y numéricas', desc:'Lógica, grafos, métodos numéricos', stage:4},
   {id:'adv',  name:'Avanzadas', desc:'Análisis, topología, categorías', stage:5}
 ];
@@ -1199,6 +1200,208 @@ const LESSONS = {
        {q: `${F('x+1','x−1')} = 2`, a: 'x = 3', s:'x + 1 = 2x − 2.'},
        {q: `${F(1,'x−2')} = ${F(1,'3x')}`, a: 'x = −1', s:'Multiplicas en cruz: 3x = x − 2, entonces x = −1.'}
      ]}
+  ],
+
+  lin: [
+    {id:'vectores', level:'Básico', title:'Vectores: suma, escalar y norma',
+     theory:[
+       `Un vector en el plano es un par ordenado (x, y). Se suman componente a componente, y se multiplica por un escalar multiplicando cada componente.`,
+       `La <b>norma</b> (longitud) de (x, y) es √(x² + y²).`
+     ],
+     examples:[
+       {t: '(1, 2) + (3, −1)', steps:['Sumas componente a componente: (1 + 3, 2 + (−1)).', 'Resultado: (4, 1).']},
+       {t: '|(3, 4)|', steps:['√(3² + 4²) = √25 = 5.']}
+     ],
+     exercises:[
+       {q: '(2, 5) + (−1, 3)', a: '(1, 8)'},
+       {q: '2 · (−3, 4)', a: '(−6, 8)'},
+       {q: '|(6, 8)|', a: '10'}
+     ]},
+
+    {id:'producto-punto', level:'Intermedio', title:'Producto punto y ángulo entre vectores',
+     theory:[
+       `El producto punto es a · b = a₁b₁ + a₂b₂. Si a · b = 0, los vectores son <b>perpendiculares (ortogonales)</b>.`,
+       `Ángulo: cos θ = (a · b) / (|a| |b|).`
+     ],
+     examples:[
+       {t: '(1, 2) · (3, 4)', steps:['1 · 3 + 2 · 4 = 3 + 8 = 11.']}
+     ],
+     exercises:[
+       {q: '(2, −1) · (1, 2)', a: '0', s:'Son perpendiculares.'},
+       {q: 'Ángulo entre (1, 0) y (1, 1)', a: '45°', s:`cos θ = 1 / (1 · √2) = ${F(1,'√2')}.`}
+     ]},
+
+    {id:'matrices', level:'Básico', title:'Matrices: suma, escalar y dimensión',
+     theory:[
+       `Una matriz es un arreglo rectangular de números. Si tiene m filas y n columnas, es de dimensión m × n. Sólo se suman matrices de la misma dimensión, y el escalar multiplica cada entrada.`
+     ],
+     examples:[
+       {t: '[1 2; 3 4] + [0 1; 1 0]', steps:['Sumas entrada por entrada: [1 3; 4 4].']}
+     ],
+     exercises:[
+       {q: '2 · [1 0; 2 3]', a: '[2 0; 4 6]'},
+       {q: '[1 2; 0 1] + [3 3; 3 3]', a: '[4 5; 3 4]'},
+       {q: 'Dimensión de una matriz de 2 × 3', a: '6 entradas', s:'Tiene 2 filas y 3 columnas.'}
+     ]},
+
+    {id:'multiplicacion-matrices', level:'Intermedio', title:'Multiplicación de matrices',
+     theory:[
+       `Para multiplicar A · B, cada entrada del resultado es el producto punto de una fila de A con una columna de B. Se puede multiplicar sólo si las columnas de A igualan las filas de B. Además, el orden importa: en general A · B ≠ B · A.`
+     ],
+     examples:[
+       {t: '[1 2; 3 4] · [0 1; 1 0]', steps:['Fila 1 · columna 1: 1·0 + 2·1 = 2.', 'Fila 1 · columna 2: 1·1 + 2·0 = 1.', 'Fila 2 · columna 1: 3·0 + 4·1 = 4; fila 2 · columna 2: 3·1 + 4·0 = 3.', 'Resultado: [2 1; 4 3].']}
+     ],
+     exercises:[
+       {q: '[2 0; 1 3] · [1 1; 0 2]', a: '[2 2; 1 7]'},
+       {q: '[5 2; 1 3] · [1 0; 0 1]', a: '[5 2; 1 3]', s:'Multiplicar por la identidad no cambia la matriz.'},
+       {q: '[1 2; 3 4] · (1, 1)', a: '(3, 7)', s:'Cada fila por el vector: 1 + 2 = 3, 3 + 4 = 7.'}
+     ]},
+
+    {id:'determinantes', level:'Intermedio', title:'Determinantes',
+     theory:[
+       `Para una matriz 2 × 2 [a b; c d], el determinante es ad − bc. Para 3 × 3, desarrolla por una fila: a₁₁(a₂₂a₃₃ − a₂₃a₃₂) − a₁₂(a₂₁a₃₃ − a₂₃a₃₁) + a₁₃(a₂₁a₃₂ − a₂₂a₃₁).`,
+       `Si el determinante es 0, la matriz no tiene inversa.`
+     ],
+     examples:[
+       {t: 'det [3 1; 4 2]', steps:['3 · 2 − 1 · 4 = 6 − 4 = 2.']}
+     ],
+     exercises:[
+       {q: 'det [5 2; 1 3]', a: '13'},
+       {q: 'det [1 2; 2 4]', a: '0', s:'La segunda fila es el doble de la primera: no tiene inversa.'},
+       {q: 'det [1 0 2; 0 1 0; 3 0 1]', a: '−5', s:'Desarrollo por la segunda columna o la regla de cofactores: 1 · 1 · 1 + 2 · (0 − 3) = −5.'}
+     ]},
+
+    {id:'inversa-sistemas', level:'Avanzado', title:'Matriz inversa y sistemas de ecuaciones',
+     theory:[
+       `Para una matriz 2 × 2 con determinante distinto de cero: A⁻¹ = (1 / det) · [d −b; −c a]. Un sistema A · x = b se resuelve con x = A⁻¹ · b.`
+     ],
+     examples:[
+       {t: 'Inversa de [2 1; 1 1]', steps:['det = 2 · 1 − 1 · 1 = 1.', 'A⁻¹ = [1 −1; −1 2].']}
+     ],
+     exercises:[
+       {q: 'Inversa de [3 1; 5 2]', a: '[2 −1; −5 3]', s:'det = 1.'},
+       {q: '¿Tiene inversa [1 2; 2 4]?', a: 'No', s:'det = 0.'},
+       {q: 'Resuelve x + y = 3, x − y = 1 con matrices', a: 'x = 2, y = 1', s:'La inversa de [1 1; 1 −1] da x = (3 + 1)/2 y y = (3 − 1)/2.'}
+     ]},
+
+    {id:'valores-propios', level:'Avanzado', title:'Valores y vectores propios',
+     theory:[
+       `Un vector v ≠ 0 es propio de A si A · v = λ · v; λ es el <b>valor propio</b>. Se encuentran resolviendo det(A − λI) = 0.`
+     ],
+     examples:[
+       {t: 'Valores propios de [3 1; 0 2]', steps:['det [3−λ 1; 0 2−λ] = (3 − λ)(2 − λ) = 0.', 'λ = 3 o λ = 2.']}
+     ],
+     exercises:[
+       {q: 'Valores propios de [4 0; 0 −1]', a: 'λ = 4 y λ = −1'},
+       {q: 'Valores propios de [1 2; 2 1]', a: 'λ = 3 y λ = −1', s:'(1 − λ)² − 4 = 0.'},
+       {q: 'Valores propios de [5 0; 0 5]', a: 'λ = 5 (doble)'}
+     ]},
+
+    {id:'espacios-vectoriales', level:'Avanzado', title:'Espacios vectoriales y subespacios',
+     theory:[
+       `Un espacio vectorial es un conjunto donde se pueden sumar vectores y multiplicarlos por escalares, con reglas como la asociatividad y la existencia del vector cero. Un <b>subespacio</b> es un subconjunto que contiene al 0 y es cerrado bajo suma y multiplicación por escalares.`,
+       `La <b>dimensión</b> es el número de vectores de una base. ℝ² tiene dimensión 2 y ℝ³ tiene dimensión 3.`
+     ],
+     examples:[
+       {t: '¿{(x, y) : x + y = 0} es subespacio de ℝ²?', steps:['Contiene al (0, 0): 0 + 0 = 0 ✓.', 'Cerrado bajo suma y escalares: sí, la condición x + y = 0 se conserva.', 'Sí es subespacio.']}
+     ],
+     exercises:[
+       {q: '¿{(x, y) : x = 1} es subespacio de ℝ²?', a: 'No', s:'No contiene al (0, 0).'},
+       {q: 'Dimensión de ℝ³', a: '3'},
+       {q: 'Una base de ℝ²', a: '{(1, 0), (0, 1)}'}
+     ]},
+
+    {id:'transformaciones-lineales', level:'Avanzado', title:'Transformaciones lineales',
+     theory:[
+       `Una transformación lineal T cumple T(u + v) = T(u) + T(v) y T(c · u) = c · T(u). Toda transformación lineal de ℝⁿ a ℝᵐ se puede representar con una matriz.`
+     ],
+     examples:[
+       {t: 'T(x, y) = (x + y, x − y)', steps:['La matriz es [1 1; 1 −1].', 'T(2, 1) = (3, 1).']}
+     ],
+     exercises:[
+       {q: 'Matriz de la rotación de 90° T(x, y) = (−y, x)', a: '[0 −1; 1 0]'},
+       {q: 'Núcleo de T(x, y) = (x, 0)', a: '{(0, y)}', s:'Los vectores que se van a (0, 0).'},
+       {q: 'T(1, 0) cuando T(x, y) = (−y, x)', a: '(0, 1)'}
+     ]}
+  ],
+
+  abs: [
+    {id:'operaciones-binarias', level:'Básico', title:'Operaciones binarias',
+     theory:[
+       `Una operación binaria combina dos elementos de un conjunto y da otro elemento del mismo conjunto. Propiedades importantes: <b>cerradura</b> (el resultado sigue en el conjunto), <b>conmutatividad</b> (a · b = b · a) y <b>asociatividad</b> ((a · b) · c = a · (b · c)).`
+     ],
+     examples:[
+       {t: 'Suma en ℕ', steps:['Cerrada: la suma de dos naturales es natural.', 'Conmutativa y asociativa: sí.']},
+       {t: 'Resta en ℕ', steps:['No es cerrada: 3 − 5 = −2, que no es natural.']}
+     ],
+     exercises:[
+       {q: '¿Es cerrada la multiplicación en ℤ?', a: 'Sí'},
+       {q: '¿Es cerrada la división en ℤ?', a: 'No', s:'Por ejemplo, 1 ÷ 2 no es entero.'},
+       {q: '¿Es conmutativa la resta en ℤ?', a: 'No', s:'3 − 5 ≠ 5 − 3.'}
+     ]},
+
+    {id:'grupos', level:'Avanzado', title:'Grupos',
+     theory:[
+       `Un grupo (G, ∗) es un conjunto con una operación que cumple: <b>cerradura</b>, <b>asociatividad</b>, existencia de un <b>elemento identidad</b> e para el que e ∗ a = a, y un <b>inverso</b> a⁻¹ para cada a, con a ∗ a⁻¹ = e.`
+     ],
+     examples:[
+       {t: '(ℤ, +) es grupo', steps:['Cerrada: sí. Asociativa: sí. Identidad: 0. Inverso de a: −a.', 'Sí es grupo.']}
+     ],
+     exercises:[
+       {q: '¿(ℕ, +) es grupo?', a: 'No', s:'No tiene inversos: el 1 no tiene inverso natural.'},
+       {q: '¿(ℤ, ·) es grupo?', a: 'No', s:'El 2 no tiene inverso entero para la multiplicación.'},
+       {q: '¿(ℤ₅, +) es grupo?', a: 'Sí', s:'Los residuos módulo 5 forman un grupo bajo suma.'}
+     ]},
+
+    {id:'subgrupos-lagrange', level:'Avanzado', title:'Subgrupos y teorema de Lagrange',
+     theory:[
+       `Un subgrupo es un subconjunto de un grupo que también es grupo con la misma operación. El <b>teorema de Lagrange</b> dice que el orden (número de elementos) de cualquier subgrupo divide al orden del grupo.`
+     ],
+     examples:[
+       {t: 'Subgrupo {0, 3} de ℤ₆', steps:['Tiene 2 elementos.', '2 divide a 6, así que es posible. En efecto, 3 + 3 = 0 en ℤ₆.']}
+     ],
+     exercises:[
+       {q: '¿Puede haber un subgrupo de orden 5 en ℤ₁₂?', a: 'No', s:'5 no divide a 12.'},
+       {q: '¿Existe un subgrupo de orden 4 en ℤ₁₂?', a: 'Sí: {0, 3, 6, 9}', s:'4 divide a 12.'}
+     ]},
+
+    {id:'anillos', level:'Avanzado', title:'Anillos',
+     theory:[
+       `Un anillo (A, +, ·) es un conjunto con dos operaciones: (A, +) es un grupo abeliano, y la multiplicación es asociativa y distribuye sobre la suma. No siempre hay inversos multiplicativos.`
+     ],
+     examples:[
+       {t: 'ℤ con suma y multiplicación', steps:['(ℤ, +) es grupo abeliano.', 'La multiplicación es asociativa y distributiva. Entonces ℤ es anillo.']}
+     ],
+     exercises:[
+       {q: '¿ℤ₆ es anillo?', a: 'Sí', s:'Es anillo, aunque tiene divisores de cero.'},
+       {q: 'En ℤ₆, ¿2 · 3 = ?', a: '0', s:'Es un divisor de cero: 2 y 3 no son cero, pero su producto sí.'}
+     ]},
+
+    {id:'cuerpos', level:'Avanzado', title:'Cuerpos',
+     theory:[
+       `Un cuerpo es un anillo conmutativo con unidad en el que todo elemento distinto de cero tiene inverso multiplicativo. Ejemplos: ℚ, ℝ, ℂ y ℤₚ cuando p es primo.`
+     ],
+     examples:[
+       {t: '¿ℤ₇ es cuerpo?', steps:['7 es primo, así que todo residuo distinto de 0 tiene inverso.', 'Sí es cuerpo.']}
+     ],
+     exercises:[
+       {q: '¿ℤ es cuerpo?', a: 'No', s:'El 2 no tiene inverso entero.'},
+       {q: '¿ℤ₆ es cuerpo?', a: 'No', s:'2 · 3 = 0 y 6 no es primo.'},
+       {q: '¿ℚ es cuerpo?', a: 'Sí'}
+     ]},
+
+    {id:'homomorfismos', level:'Avanzado', title:'Homomorfismos',
+     theory:[
+       `Un homomorfismo f entre grupos cumple f(a ∗ b) = f(a) ∗ f(b). Su <b>núcleo</b> es el conjunto de elementos que van a la identidad.`
+     ],
+     examples:[
+       {t: 'f(x) = 2x de (ℤ, +) a (ℤ, +)', steps:['f(a + b) = 2(a + b) = 2a + 2b = f(a) + f(b).', 'Sí es homomorfismo.']}
+     ],
+     exercises:[
+       {q: 'f(x) = x + 1 de (ℤ, +) a (ℤ, +): ¿es homomorfismo?', a: 'No', s:'f(a + b) = a + b + 1, pero f(a) + f(b) = a + b + 2.'},
+       {q: 'f(x) = −x de (ℤ, +) a (ℤ, +): ¿es homomorfismo?', a: 'Sí'},
+       {q: 'Núcleo de f(x) = 2x', a: '{0}'}
+     ]}
   ]
 };
 
@@ -1339,8 +1542,8 @@ function route() {
   backBtn.hidden = !h || h === 'home';
   hdrTitle.textContent = t ? t.name : 'Matemáticas Puras';
   if (h === 'calc') renderCalc();
-  else if ((h === 'arit' || h === 'alg') && sub) renderLesson(t, sub);
-  else if (h === 'arit' || h === 'alg') renderTopic(t);
+  else if (LESSONS[h] && sub) renderLesson(t, sub);
+  else if (LESSONS[h]) renderTopic(t);
   else if (t) renderSoon(t);
   else renderHome();
   window.scrollTo(0, 0);
